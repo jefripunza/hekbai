@@ -2,6 +2,7 @@
 class PanelController {
     constructor() {
         this.currentState = 'connect';
+        this.websocket = null;
         this.roomData = {
             roomId: '',
             attackerName: '',
@@ -72,39 +73,176 @@ class PanelController {
         
         const musicInput = document.getElementById('music-upload');
         musicInput.addEventListener('change', (e) => this.handleMusicUpload(e));
-        
         // Copy intercept code button
         const copyCodeBtn = document.getElementById('copy-code-btn');
         copyCodeBtn.addEventListener('click', () => this.handleCopyInterceptCode());
     }
 
-    // Connection Handler
+    // Connect Form Handler
     handleConnect() {
-        const roomIdInput = document.getElementById('room-id');
-        const roomId = roomIdInput.value.trim();
-
+        const roomId = document.getElementById('room-id').value.trim();
+        
         if (!roomId) {
-            this.showError('Please enter a Room ID');
+            this.showError('Please enter a room ID');
             return;
         }
-
-        // Validate room ID format (optional)
-        if (roomId.length < 3) {
-            this.showError('Room ID must be at least 3 characters');
-            return;
-        }
-
-        this.roomData.roomId = roomId;
+        
+        // Sanitize room ID - only allow letters, numbers, and convert others to underscore
+        const sanitizedRoomId = roomId.replace(/[^a-zA-Z0-9]/g, '_');
+        
+        // Update the input field with sanitized value
+        document.getElementById('room-id').value = sanitizedRoomId;
+        
+        // Save sanitized room ID
+        this.roomData.roomId = sanitizedRoomId;
         
         // Show loading state
         this.showLoading('connect-btn', 'CONNECTING...');
         
-        // Simulate connection process
-        setTimeout(() => {
+        // Connect to WebSocket
+        this.connectWebSocket(sanitizedRoomId);
+    }
+    
+    // WebSocket Connection
+    connectWebSocket(roomId) {
+        try {
+            // Create WebSocket connection
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/${roomId}`;
+            
+            this.websocket = new WebSocket(wsUrl);
+            
+            this.websocket.onopen = () => {
+                console.log('WebSocket connected');
+                // Send join_attacker event with new payload structure
+                const joinPayload = {
+                    event: 'join',
+                    join_at: 'attacker'
+                };
+                this.websocket.send(JSON.stringify(joinPayload));
+                
+                // Connection successful
+                this.hideLoading('connect-btn', 'CONNECT');
+                this.showState('setup');
+                this.addLogEntry('Connected to room: ' + roomId);
+                this.showSuccess('Successfully connected to room!');
+            };
+            
+            this.websocket.onmessage = (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    console.log('WebSocket message:', data);
+                    
+                    // Handle different message types based on new structure
+                    if (data.type && data.device_id && data.content) {
+                        // This is a Message type (welcome message, etc.)
+                        this.addLogEntry(`${data.type.toUpperCase()}: ${data.content}`);
+                    } else if (data.event) {
+                        // This is a Data type with event structure
+                        this.handleWebSocketEvent(data);
+                    } else {
+                        this.addLogEntry(`Unknown message: ${JSON.stringify(data)}`);
+                    }
+                } catch (e) {
+                    console.log('WebSocket raw message:', event.data);
+                    this.addLogEntry(`Raw message: ${event.data}`);
+                }
+            };
+            
+            this.websocket.onerror = (error) => {
+                console.error('WebSocket error:', error);
+                this.hideLoading('connect-btn', 'CONNECT');
+                this.showError('Failed to connect to WebSocket');
+            };
+            
+            this.websocket.onclose = () => {
+                console.log('WebSocket disconnected');
+                this.addLogEntry('WebSocket connection closed');
+                this.websocket = null;
+            };
+            
+        } catch (error) {
+            console.error('WebSocket connection error:', error);
             this.hideLoading('connect-btn', 'CONNECT');
-            this.showState('setup');
-            this.addLogEntry('Connected to room: ' + roomId);
-        }, 1500);
+            this.showError('Failed to establish WebSocket connection');
+        }
+    }
+    
+    // Handle WebSocket Events with new Data structure
+    handleWebSocketEvent(data) {
+        switch (data.event) {
+            case 'join':
+                this.addLogEntry(`Join event: ${data.join_at} joined`);
+                break;
+            case 'action':
+                if (data.action) {
+                    this.addLogEntry(`Action received: ${data.action.type}`);
+                    this.handleAttackAction(data.action);
+                }
+                break;
+            case 'message':
+                if (data.message) {
+                    this.addLogEntry(`Message from ${data.message.type}: ${data.message.content}`);
+                }
+                break;
+            default:
+                this.addLogEntry(`Unknown event: ${data.event}`);
+        }
+    }
+    
+    // Handle Attack Actions
+    handleAttackAction(action) {
+        switch (action.type) {
+            case 'attack':
+                this.addLogEntry('🚨 ATTACK INITIATED');
+                break;
+            case 'open-cam':
+                this.addLogEntry('📷 Camera access requested');
+                break;
+            case 'get-geolocation':
+                this.addLogEntry('📍 Geolocation access requested');
+                break;
+            default:
+                this.addLogEntry(`Unknown action: ${action.type}`);
+        }
+    }
+    
+    // Send Action to Target
+    sendAction(actionType) {
+        if (!this.websocket || this.websocket.readyState !== WebSocket.OPEN) {
+            this.showError('WebSocket not connected');
+            return;
+        }
+        
+        const actionPayload = {
+            event: 'action',
+            action: {
+                type: actionType
+            }
+        };
+        
+        this.websocket.send(JSON.stringify(actionPayload));
+        this.addLogEntry(`Sent action: ${actionType}`);
+    }
+    
+    // Send Message
+    sendMessage(content, deviceId = 'panel') {
+        if (!this.websocket || this.websocket.readyState !== WebSocket.OPEN) {
+            this.showError('WebSocket not connected');
+            return;
+        }
+        
+        const messagePayload = {
+            event: 'message',
+            message: {
+                type: 'attacker',
+                device_id: deviceId,
+                content: content
+            }
+        };
+        
+        this.websocket.send(JSON.stringify(messagePayload));
+        this.addLogEntry(`Sent message: ${content}`);
     }
 
     // Setup Form Handler
@@ -159,27 +297,62 @@ class PanelController {
         // Show loading state
         this.showLoading('save-btn', 'SAVING...');
 
-        // Simulate save process
-        setTimeout(() => {
-            this.hideLoading('save-btn', 'SAVE CONFIGURATION');
-            this.updateListeningState();
-            this.showState('listening');
-            this.addLogEntry('Configuration saved successfully');
-            this.addLogEntry(`Team size: ${teamMembers.length} members`);
-            this.addLogEntry('System now listening for commands');
-        }, 2000);
+        // Send configuration to API
+        this.saveConfiguration();
     }
-
-    // Disconnect Handler
-    handleDisconnect() {
-        this.showLoading('disconnect-btn', 'DISCONNECTING...');
-        
-        setTimeout(() => {
-            this.hideLoading('disconnect-btn', 'DISCONNECT');
-            this.resetForm();
-            this.showState('connect');
-            this.addLogEntry('Disconnected from system');
-        }, 1000);
+    
+    // Save Configuration to API
+    async saveConfiguration() {
+        try {
+            const configData = {
+                attacker_name: this.roomData.attackerName,
+                template_key: this.roomData.template,
+                logo: this.roomData.logo ? await this.fileToBase64(this.roomData.logo) : undefined,
+                music: this.roomData.music ? await this.fileToBase64(this.roomData.music) : undefined,
+                message: this.roomData.description,
+                teams: this.roomData.teamMembers
+            };
+            
+            const response = await fetch(`/api/config/set/${this.roomData.roomId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(configData)
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Configuration saved:', result);
+                
+                this.hideLoading('save-btn', 'SAVE CONFIGURATION');
+                this.showState('listening');
+                this.addLogEntry('Configuration saved successfully');
+                this.updateListeningState();
+                this.showSuccess('Configuration saved successfully!');
+            } else {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            
+        } catch (error) {
+            console.error('Failed to save configuration:', error);
+            this.hideLoading('save-btn', 'SAVE CONFIGURATION');
+            this.showError('Failed to save configuration: ' + error.message);
+        }
+    }
+    
+    // Convert File to Base64
+    fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                // Remove data:image/jpeg;base64, prefix
+                const base64 = reader.result.split(',')[1];
+                resolve(base64);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
     }
 
     // Logo Upload Handler
@@ -267,7 +440,60 @@ class PanelController {
         const roomId = this.roomData.roomId;
         const template = this.roomData.template;
         
-        return `// HEKBAI Intercept Code\n// Room: ${roomId}\n// Template: ${this.getTemplateDisplayName(template)}\n\nconst ws = new WebSocket('${baseUrl.replace('http', 'ws')}/ws');\nws.onopen = () => {\n    console.log('Connected to HEKBAI room: ${roomId}');\n};\nws.onmessage = (event) => {\n    const data = JSON.parse(event.data);\n    console.log('Intercepted:', data);\n};`;
+        return `// HEKBAI Intercept Code
+// Room: ${roomId}
+// Template: ${this.getTemplateDisplayName(template)}
+// Attacker: ${this.roomData.attackerName}
+
+const ws = new WebSocket('${baseUrl.replace('http', 'ws')}/${roomId}');
+
+ws.onopen = () => {
+    console.log('Connected to HEKBAI room: ${roomId}');
+    
+    // Join as target
+    const joinPayload = {
+        event: 'join',
+        join_at: 'target'
+    };
+    ws.send(JSON.stringify(joinPayload));
+};
+
+ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    console.log('Intercepted:', data);
+    
+    // Handle different message types
+    if (data.event === 'action' && data.action) {
+        console.log('Action received:', data.action.type);
+        handleAction(data.action);
+    } else if (data.event === 'message' && data.message) {
+        console.log('Message from attacker:', data.message.content);
+    }
+};
+
+function handleAction(action) {
+    switch (action.type) {
+        case 'attack':
+            console.log('🚨 Attack initiated!');
+            break;
+        case 'open-cam':
+            console.log('📷 Camera access requested');
+            // Add camera access code here
+            break;
+        case 'get-geolocation':
+            console.log('📍 Geolocation requested');
+            // Add geolocation code here
+            break;
+    }
+}
+
+ws.onerror = (error) => {
+    console.error('WebSocket error:', error);
+};
+
+ws.onclose = () => {
+    console.log('WebSocket connection closed');
+};`;
     }
 
     // Update Listening State Display
@@ -379,6 +605,19 @@ class PanelController {
         this.addLogEntry(`SUCCESS: ${message}`);
     }
 
+    // Disconnect Handler
+    handleDisconnect() {
+        // Close WebSocket connection
+        if (this.websocket) {
+            this.websocket.close();
+            this.websocket = null;
+        }
+        
+        this.showState('connect');
+        this.addLogEntry('Disconnected from room');
+        this.resetForm();
+    }
+
     addLogEntry(message) {
         const logContainer = document.querySelector('.log-container');
         if (!logContainer) return;
@@ -410,6 +649,12 @@ class PanelController {
         document.getElementById('file-name').textContent = 'Choose file...';
         document.getElementById('music-file-name').textContent = 'Choose music file...';
 
+        // Close WebSocket if open
+        if (this.websocket) {
+            this.websocket.close();
+            this.websocket = null;
+        }
+        
         // Reset room data
         this.roomData = {
             roomId: '',

