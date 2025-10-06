@@ -1,218 +1,234 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacked By Shadow Strike</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            background: #000;
-            color: #fff;
-            font-family: 'Courier New', monospace;
-            min-height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .bg-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(255, 0, 0, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(0, 255, 0, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(0, 0, 255, 0.3) 0%, transparent 50%);
-            animation: bg-shift 8s ease-in-out infinite;
-            z-index: -1;
-        }
-        
-        @keyframes bg-shift {
-            0%, 100% { filter: hue-rotate(0deg); }
-            50% { filter: hue-rotate(180deg); }
-        }
-        
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-            padding: 20px;
-            position: relative;
-        }
-        
-        .header {
-            margin-bottom: 50px;
-        }
-        
-        .hack-title {
-            font-size: 5rem;
-            font-weight: bold;
-            color: #ff0000;
-            text-shadow: 
-                0 0 10px #ff0000,
-                0 0 20px #ff0000,
-                0 0 30px #ff0000;
-            margin-bottom: 20px;
-            animation: text-flicker 2s infinite;
-        }
-        
-        @keyframes text-flicker {
-            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-                text-shadow: 
-                    0 0 10px #ff0000,
-                    0 0 20px #ff0000,
-                    0 0 30px #ff0000;
-            }
-            20%, 24%, 55% {
-                text-shadow: none;
-            }
-        }
-        
-        .attacker-name {
-            font-size: 2.5rem;
-            color: #00ff00;
-            margin-bottom: 20px;
-            letter-spacing: 3px;
-        }
-        
-        .subtitle {
-            font-size: 2rem;
-            color: #00ff00;
-            margin-bottom: 30px;
-            letter-spacing: 3px;
-        }
-        
-        .team-logo {
-            width: 150px;
-            height: 150px;
-            border: 2px solid #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            margin: 30px auto;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-        }
-        
-        .message-box {
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid #333;
-            border-radius: 10px;
-            padding: 30px;
-            max-width: 800px;
-            margin: 30px 0;
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
-        }
-        
-        .message {
-            font-size: 1.3rem;
-            line-height: 1.8;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-        
-        .team-scroll {
-            width: 100%;
-            background: rgba(255, 0, 0, 0.1);
-            border: 1px solid #ff0000;
-            padding: 15px 0;
-            margin: 30px 0;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .team-text {
-            display: inline-block;
-            white-space: nowrap;
-            animation: scroll-text 22s linear infinite;
-            font-size: 1.3rem;
-            color: #ffff00;
-        }
-        
-        @keyframes scroll-text {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-        
-        .warning-text {
-            color: #ffff00;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 20px 0;
-            animation: blink 1.5s infinite;
-        }
-        
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0.3; }
-        }
-        
-        .signature {
-            font-size: 2rem;
-            color: #ff0000;
-            margin-top: 40px;
-            text-shadow: 0 0 15px #ff0000;
-        }
-        
-        .social-links {
-            margin-top: 30px;
-            font-size: 1.1rem;
-        }
-        
-        .social-links a {
-            color: #00ffff;
-            text-decoration: none;
-            margin: 0 15px;
-        }
-        
-        .social-links a:hover {
-            text-shadow: 0 0 10px #00ffff;
-        }
-    </style>
-</head>
-<body>
-    <div class="bg-video"></div>
-    <div class="container">
-        <div class="header">
-            <h1 class="hack-title">HACKED BY</h1>
-            <h2 class="attacker-name">[ATTACKER_NAME]</h2>
-            <h3 class="subtitle">SHADOW STRIKE TEAM</h3>
-        </div>
-        
-        <div class="team-logo">🌑</div>
-        
-        <div class="message-box">
-            <div class="message">
-                [MESSAGE_CONTENT]
-            </div>
-            
-            <div class="warning-text">
-                ⚠️ FIX YOUR SECURITY ASAP ⚠️
-            </div>
-        </div>
-        
-        <div class="team-scroll">
-            <div class="team-text">TEAM MEMBERS: [TEAM_NAMES]</div>
-        </div>
-        
-        <div class="signature">- SHADOW STRIKE -</div>
-        
-        <div class="social-links">
-            <a href="#">Twitter: @ShadowStrike</a>
-            <a href="#">Email: contact@shadowstrike.org</a>
-        </div>
-    </div>
-</body>
-</html>
+<title>Hacked By Shadow Strike</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background: #000;
+    color: #fff;
+    font-family: "Courier New", monospace;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bg-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        circle at 20% 50%,
+        rgba(255, 0, 0, 0.3) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        rgba(0, 255, 0, 0.3) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 40% 80%,
+        rgba(0, 0, 255, 0.3) 0%,
+        transparent 50%
+      );
+    animation: bg-shift 8s ease-in-out infinite;
+    z-index: -1;
+  }
+
+  @keyframes bg-shift {
+    0%,
+    100% {
+      filter: hue-rotate(0deg);
+    }
+    50% {
+      filter: hue-rotate(180deg);
+    }
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+  }
+
+  .header {
+    margin-bottom: 50px;
+  }
+
+  .hack-title {
+    font-size: 5rem;
+    font-weight: bold;
+    color: #ff0000;
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000;
+    margin-bottom: 20px;
+    animation: text-flicker 2s infinite;
+  }
+
+  @keyframes text-flicker {
+    0%,
+    19%,
+    21%,
+    23%,
+    25%,
+    54%,
+    56%,
+    100% {
+      text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000;
+    }
+    20%,
+    24%,
+    55% {
+      text-shadow: none;
+    }
+  }
+
+  .attacker-name {
+    font-size: 2.5rem;
+    color: #00ff00;
+    margin-bottom: 20px;
+    letter-spacing: 3px;
+  }
+
+  .subtitle {
+    font-size: 2rem;
+    color: #00ff00;
+    margin-bottom: 30px;
+    letter-spacing: 3px;
+  }
+
+  .team-logo {
+    width: 150px;
+    height: 150px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    margin: 30px auto;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+  }
+
+  .message-box {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 800px;
+    margin: 30px 0;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+  }
+
+  .message {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .team-scroll {
+    width: 100%;
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid #ff0000;
+    padding: 15px 0;
+    margin: 30px 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .team-text {
+    display: inline-block;
+    white-space: nowrap;
+    animation: scroll-text 22s linear infinite;
+    font-size: 1.3rem;
+    color: #ffff00;
+  }
+
+  @keyframes scroll-text {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  .warning-text {
+    color: #ffff00;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 20px 0;
+    animation: blink 1.5s infinite;
+  }
+
+  @keyframes blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    51%,
+    100% {
+      opacity: 0.3;
+    }
+  }
+
+  .signature {
+    font-size: 2rem;
+    color: #ff0000;
+    margin-top: 40px;
+    text-shadow: 0 0 15px #ff0000;
+  }
+
+  .social-links {
+    margin-top: 30px;
+    font-size: 1.1rem;
+  }
+
+  .social-links a {
+    color: #00ffff;
+    text-decoration: none;
+    margin: 0 15px;
+  }
+
+  .social-links a:hover {
+    text-shadow: 0 0 10px #00ffff;
+  }
+</style>
+<div class="bg-video"></div>
+<div class="container">
+  <div class="header">
+    <h1 class="hack-title">HACKED BY</h1>
+    <h2 class="attacker-name">[ATTACKER_NAME]</h2>
+    <h3 class="subtitle">SHADOW STRIKE TEAM</h3>
+  </div>
+
+  <div class="team-logo">🌑</div>
+
+  <div class="message-box">
+    <div class="message">[MESSAGE_CONTENT]</div>
+
+    <div class="warning-text">⚠️ FIX YOUR SECURITY ASAP ⚠️</div>
+  </div>
+
+  <div class="team-scroll">
+    <div class="team-text">TEAM MEMBERS: [TEAM_NAMES]</div>
+  </div>
+
+  <div class="signature">- SHADOW STRIKE -</div>
+
+  <div class="social-links">
+    <a href="#">Twitter: @ShadowStrike</a>
+    <a href="#">Email: contact@shadowstrike.org</a>
+  </div>
+</div>

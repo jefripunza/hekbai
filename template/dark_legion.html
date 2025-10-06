@@ -1,242 +1,259 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacked By Dark Legion</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            background: #000;
-            color: #fff;
-            font-family: 'Impact', 'Arial Black', sans-serif;
-            min-height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .smoke-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(ellipse at top, rgba(255, 0, 0, 0.3), transparent),
-                radial-gradient(ellipse at bottom, rgba(128, 0, 128, 0.3), transparent);
-            animation: smoke-move 10s ease-in-out infinite;
-            z-index: -1;
-        }
-        
-        @keyframes smoke-move {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.1) rotate(2deg); }
-        }
-        
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-            padding: 20px;
-            position: relative;
-        }
-        
-        .skull-animation {
-            font-size: 8rem;
-            margin-bottom: 30px;
-            animation: skull-shake 3s infinite;
-            filter: drop-shadow(0 0 20px #ff0000);
-        }
-        
-        @keyframes skull-shake {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-5deg); }
-            75% { transform: rotate(5deg); }
-        }
-        
-        .hack-title {
-            font-size: 5rem;
-            font-weight: 900;
-            color: #ff0000;
-            text-shadow: 
-                3px 3px 0px #000,
-                -1px -1px 0px #000,
-                1px -1px 0px #000,
-                -1px 1px 0px #000,
-                0 0 30px #ff0000;
-            margin-bottom: 20px;
-            animation: title-pulse 2s infinite;
-        }
-        
-        @keyframes title-pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        .attacker-name {
-            font-size: 3rem;
-            color: #fff;
-            text-shadow: 2px 2px 4px #000;
-            margin-bottom: 20px;
-            letter-spacing: 3px;
-        }
-        
-        .team-name {
-            font-size: 3rem;
-            color: #fff;
-            text-shadow: 2px 2px 4px #000;
-            margin-bottom: 40px;
-            letter-spacing: 3px;
-        }
-        
-        .fire-text {
-            background: linear-gradient(45deg, #ff0000, #ff8800, #ffff00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: fire-flicker 1.5s infinite;
-        }
-        
-        @keyframes fire-flicker {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.3); }
-        }
-        
-        .message-panel {
-            background: rgba(0, 0, 0, 0.9);
-            border: 2px solid #ff0000;
-            border-radius: 15px;
-            padding: 40px;
-            max-width: 900px;
-            margin: 30px 0;
-            box-shadow: 
-                0 0 30px rgba(255, 0, 0, 0.5),
-                inset 0 0 30px rgba(255, 0, 0, 0.1);
-        }
-        
-        .message-title {
-            font-size: 2.5rem;
-            color: #ff0000;
-            margin-bottom: 30px;
-            text-decoration: underline;
-        }
-        
-        .message-text {
-            font-size: 1.4rem;
-            line-height: 1.8;
-            margin-bottom: 20px;
-            text-align: left;
-            font-family: 'Arial', sans-serif;
-        }
-        
-        .highlight {
-            color: #ffff00;
-            font-weight: bold;
-        }
-        
-        .team-scroll {
-            width: 100%;
-            background: rgba(255, 0, 0, 0.1);
-            border: 1px solid #ff0000;
-            padding: 15px 0;
-            margin: 30px 0;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .team-text {
-            display: inline-block;
-            white-space: nowrap;
-            animation: scroll-text 26s linear infinite;
-            font-size: 1.3rem;
-            color: #ffff00;
-        }
-        
-        @keyframes scroll-text {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-        
-        .warning-box {
-            background: linear-gradient(45deg, #ff0000, #8b0000);
-            border: 2px solid #fff;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 30px 0;
-            font-size: 1.8rem;
-            font-weight: bold;
-            animation: warning-flash 2s infinite;
-        }
-        
-        @keyframes warning-flash {
-            0%, 50% { background: linear-gradient(45deg, #ff0000, #8b0000); }
-            51%, 100% { background: linear-gradient(45deg, #8b0000, #ff0000); }
-        }
-        
-        .signature {
-            font-size: 2.5rem;
-            color: #ff0000;
-            margin-top: 40px;
-            text-shadow: 0 0 20px #ff0000;
-            font-weight: bold;
-        }
-        
-        .footer-links {
-            margin-top: 30px;
-            font-size: 1.2rem;
-        }
-        
-        .footer-links a {
-            color: #00ffff;
-            text-decoration: none;
-            margin: 0 20px;
-        }
-        
-        .footer-links a:hover {
-            text-shadow: 0 0 10px #00ffff;
-        }
-    </style>
-</head>
-<body>
-    <div class="smoke-bg"></div>
-    
-    <div class="container">
-        <div class="skull-animation">☠️</div>
-        
-        <h1 class="hack-title">HACKED BY</h1>
-        <h2 class="attacker-name">[ATTACKER_NAME]</h2>
-        <h3 class="team-name fire-text">DARK LEGION</h3>
-        
-        <div class="message-panel">
-            <h4 class="message-title">SYSTEM INFILTRATION COMPLETE</h4>
-            
-            <div class="message-text">
-                [MESSAGE_CONTENT]
-            </div>
-        </div>
-        
-        <div class="team-scroll">
-            <div class="team-text">TEAM MEMBERS: [TEAM_NAMES]</div>
-        </div>
-        
-        <div class="warning-box">
-            ⚠️ IMMEDIATE SECURITY UPGRADE REQUIRED ⚠️
-        </div>
-        
-        <div class="signature">- DARK LEGION -</div>
-        
-        <div class="footer-links">
-            <a href="#">darklegion@protonmail.com</a>
-            <a href="#">@DarkLegionTeam</a>
-        </div>
-    </div>
-</body>
-</html>
+<title>Hacked By Dark Legion</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background: #000;
+    color: #fff;
+    font-family: "Impact", "Arial Black", sans-serif;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .smoke-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        ellipse at top,
+        rgba(255, 0, 0, 0.3),
+        transparent
+      ),
+      radial-gradient(ellipse at bottom, rgba(128, 0, 128, 0.3), transparent);
+    animation: smoke-move 10s ease-in-out infinite;
+    z-index: -1;
+  }
+
+  @keyframes smoke-move {
+    0%,
+    100% {
+      transform: scale(1) rotate(0deg);
+    }
+    50% {
+      transform: scale(1.1) rotate(2deg);
+    }
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+  }
+
+  .skull-animation {
+    font-size: 8rem;
+    margin-bottom: 30px;
+    animation: skull-shake 3s infinite;
+    filter: drop-shadow(0 0 20px #ff0000);
+  }
+
+  @keyframes skull-shake {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(-5deg);
+    }
+    75% {
+      transform: rotate(5deg);
+    }
+  }
+
+  .hack-title {
+    font-size: 5rem;
+    font-weight: 900;
+    color: #ff0000;
+    text-shadow: 3px 3px 0px #000, -1px -1px 0px #000, 1px -1px 0px #000,
+      -1px 1px 0px #000, 0 0 30px #ff0000;
+    margin-bottom: 20px;
+    animation: title-pulse 2s infinite;
+  }
+
+  @keyframes title-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+
+  .attacker-name {
+    font-size: 3rem;
+    color: #fff;
+    text-shadow: 2px 2px 4px #000;
+    margin-bottom: 20px;
+    letter-spacing: 3px;
+  }
+
+  .team-name {
+    font-size: 3rem;
+    color: #fff;
+    text-shadow: 2px 2px 4px #000;
+    margin-bottom: 40px;
+    letter-spacing: 3px;
+  }
+
+  .fire-text {
+    background: linear-gradient(45deg, #ff0000, #ff8800, #ffff00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fire-flicker 1.5s infinite;
+  }
+
+  @keyframes fire-flicker {
+    0%,
+    100% {
+      filter: brightness(1);
+    }
+    50% {
+      filter: brightness(1.3);
+    }
+  }
+
+  .message-panel {
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid #ff0000;
+    border-radius: 15px;
+    padding: 40px;
+    max-width: 900px;
+    margin: 30px 0;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.5),
+      inset 0 0 30px rgba(255, 0, 0, 0.1);
+  }
+
+  .message-title {
+    font-size: 2.5rem;
+    color: #ff0000;
+    margin-bottom: 30px;
+    text-decoration: underline;
+  }
+
+  .message-text {
+    font-size: 1.4rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    text-align: left;
+    font-family: "Arial", sans-serif;
+  }
+
+  .highlight {
+    color: #ffff00;
+    font-weight: bold;
+  }
+
+  .team-scroll {
+    width: 100%;
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid #ff0000;
+    padding: 15px 0;
+    margin: 30px 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .team-text {
+    display: inline-block;
+    white-space: nowrap;
+    animation: scroll-text 26s linear infinite;
+    font-size: 1.3rem;
+    color: #ffff00;
+  }
+
+  @keyframes scroll-text {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  .warning-box {
+    background: linear-gradient(45deg, #ff0000, #8b0000);
+    border: 2px solid #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 30px 0;
+    font-size: 1.8rem;
+    font-weight: bold;
+    animation: warning-flash 2s infinite;
+  }
+
+  @keyframes warning-flash {
+    0%,
+    50% {
+      background: linear-gradient(45deg, #ff0000, #8b0000);
+    }
+    51%,
+    100% {
+      background: linear-gradient(45deg, #8b0000, #ff0000);
+    }
+  }
+
+  .signature {
+    font-size: 2.5rem;
+    color: #ff0000;
+    margin-top: 40px;
+    text-shadow: 0 0 20px #ff0000;
+    font-weight: bold;
+  }
+
+  .footer-links {
+    margin-top: 30px;
+    font-size: 1.2rem;
+  }
+
+  .footer-links a {
+    color: #00ffff;
+    text-decoration: none;
+    margin: 0 20px;
+  }
+
+  .footer-links a:hover {
+    text-shadow: 0 0 10px #00ffff;
+  }
+</style>
+<div class="smoke-bg"></div>
+
+<div class="container">
+  <div class="skull-animation">☠️</div>
+
+  <h1 class="hack-title">HACKED BY</h1>
+  <h2 class="attacker-name">[ATTACKER_NAME]</h2>
+  <h3 class="team-name fire-text">DARK LEGION</h3>
+
+  <div class="message-panel">
+    <h4 class="message-title">SYSTEM INFILTRATION COMPLETE</h4>
+
+    <div class="message-text">[MESSAGE_CONTENT]</div>
+  </div>
+
+  <div class="team-scroll">
+    <div class="team-text">TEAM MEMBERS: [TEAM_NAMES]</div>
+  </div>
+
+  <div class="warning-box">⚠️ IMMEDIATE SECURITY UPGRADE REQUIRED ⚠️</div>
+
+  <div class="signature">- DARK LEGION -</div>
+
+  <div class="footer-links">
+    <a href="#">darklegion@protonmail.com</a>
+    <a href="#">@DarkLegionTeam</a>
+  </div>
+</div>

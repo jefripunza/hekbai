@@ -1,177 +1,181 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacked By CyberGhost</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            background: linear-gradient(45deg, #000, #1a0033, #000);
-            color: #ff0080;
-            font-family: 'Arial', sans-serif;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
-        
-        .cyber-grid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(255, 0, 128, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 0, 128, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: grid-move 10s linear infinite;
-            z-index: -1;
-        }
-        
-        @keyframes grid-move {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-        
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-            padding: 20px;
-            position: relative;
-        }
-        
-        .logo {
-            width: 200px;
-            height: 200px;
-            border: 3px solid #ff0080;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            margin-bottom: 30px;
-            animation: rotate 5s linear infinite;
-            background: radial-gradient(circle, rgba(255, 0, 128, 0.2), transparent);
-        }
-        
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .hack-title {
-            font-size: 4rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-shadow: 0 0 30px #ff0080;
-            letter-spacing: 3px;
-        }
-        
-        .attacker-name {
-            font-size: 2.5rem;
-            color: #00ffff;
-            margin-bottom: 20px;
-            text-shadow: 0 0 20px #00ffff;
-        }
-        
-        .hacker-name {
-            font-size: 2rem;
-            color: #00ffff;
-            margin-bottom: 40px;
-            text-shadow: 0 0 20px #00ffff;
-        }
-        
-        .security-msg {
-            font-size: 1.8rem;
-            color: #ffff00;
-            margin-bottom: 30px;
-            animation: pulse-text 2s infinite;
-        }
-        
-        @keyframes pulse-text {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        .description {
-            max-width: 700px;
-            font-size: 1.3rem;
-            line-height: 1.8;
-            margin-bottom: 40px;
-            color: #fff;
-        }
-        
-        .team-scroll {
-            width: 100%;
-            background: rgba(255, 0, 128, 0.1);
-            border: 1px solid #ff0080;
-            padding: 15px 0;
-            margin: 30px 0;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .team-text {
-            display: inline-block;
-            white-space: nowrap;
-            animation: scroll-text 25s linear infinite;
-            font-size: 1.3rem;
-            color: #00ffff;
-        }
-        
-        @keyframes scroll-text {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-        
-        .contact {
-            font-size: 1.2rem;
-            color: #00ff00;
-            margin-top: 30px;
-        }
-        
-        .footer {
-            position: absolute;
-            bottom: 20px;
-            font-size: 1rem;
-            color: #888;
-        }
-    </style>
-</head>
-<body>
-    <div class="cyber-grid"></div>
-    <div class="container">
-        <div class="logo">👻</div>
-        <h1 class="hack-title">HACKED BY</h1>
-        <h2 class="attacker-name">[ATTACKER_NAME]</h2>
-        <h3 class="hacker-name">CYBERGHOST TEAM</h3>
-        <div class="security-msg">🔓 YOUR SECURITY IS LOW 🔓</div>
-        
-        <div class="description">
-            [MESSAGE_CONTENT]
-        </div>
-        
-        <div class="team-scroll">
-            <div class="team-text">TEAM MEMBERS: [TEAM_NAMES]</div>
-        </div>
-        
-        <div class="contact">
-            Contact: cyberghost@protonmail.com
-        </div>
-        
-        <div class="footer">
-            Remember: Security is not a product, but a process.
-        </div>
-    </div>
-</body>
-</html>
+<title>Hacked By CyberGhost</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background: linear-gradient(45deg, #000, #1a0033, #000);
+    color: #ff0080;
+    font-family: "Arial", sans-serif;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .cyber-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(
+        rgba(255, 0, 128, 0.1) 1px,
+        transparent 1px
+      ),
+      linear-gradient(90deg, rgba(255, 0, 128, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: grid-move 10s linear infinite;
+    z-index: -1;
+  }
+
+  @keyframes grid-move {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(50px, 50px);
+    }
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+  }
+
+  .logo {
+    width: 200px;
+    height: 200px;
+    border: 3px solid #ff0080;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    margin-bottom: 30px;
+    animation: rotate 5s linear infinite;
+    background: radial-gradient(circle, rgba(255, 0, 128, 0.2), transparent);
+  }
+
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .hack-title {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 0 0 30px #ff0080;
+    letter-spacing: 3px;
+  }
+
+  .attacker-name {
+    font-size: 2.5rem;
+    color: #00ffff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px #00ffff;
+  }
+
+  .hacker-name {
+    font-size: 2rem;
+    color: #00ffff;
+    margin-bottom: 40px;
+    text-shadow: 0 0 20px #00ffff;
+  }
+
+  .security-msg {
+    font-size: 1.8rem;
+    color: #ffff00;
+    margin-bottom: 30px;
+    animation: pulse-text 2s infinite;
+  }
+
+  @keyframes pulse-text {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  .description {
+    max-width: 700px;
+    font-size: 1.3rem;
+    line-height: 1.8;
+    margin-bottom: 40px;
+    color: #fff;
+  }
+
+  .team-scroll {
+    width: 100%;
+    background: rgba(255, 0, 128, 0.1);
+    border: 1px solid #ff0080;
+    padding: 15px 0;
+    margin: 30px 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .team-text {
+    display: inline-block;
+    white-space: nowrap;
+    animation: scroll-text 25s linear infinite;
+    font-size: 1.3rem;
+    color: #00ffff;
+  }
+
+  @keyframes scroll-text {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  .contact {
+    font-size: 1.2rem;
+    color: #00ff00;
+    margin-top: 30px;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 20px;
+    font-size: 1rem;
+    color: #888;
+  }
+</style>
+<div class="cyber-grid"></div>
+<div class="container">
+  <div class="logo">👻</div>
+  <h1 class="hack-title">HACKED BY</h1>
+  <h2 class="attacker-name">[ATTACKER_NAME]</h2>
+  <h3 class="hacker-name">CYBERGHOST TEAM</h3>
+  <div class="security-msg">🔓 YOUR SECURITY IS LOW 🔓</div>
+
+  <div class="description">[MESSAGE_CONTENT]</div>
+
+  <div class="team-scroll">
+    <div class="team-text">TEAM MEMBERS: [TEAM_NAMES]</div>
+  </div>
+
+  <div class="contact">Contact: cyberghost@protonmail.com</div>
+
+  <div class="footer">Remember: Security is not a product, but a process.</div>
+</div>

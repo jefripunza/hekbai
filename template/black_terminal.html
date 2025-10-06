@@ -1,222 +1,264 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacked By Black Terminal</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            background: #000;
-            color: #00ff00;
-            font-family: 'Consolas', 'Courier New', monospace;
-            min-height: 100vh;
-            position: relative;
-        }
-        
-        .terminal-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                repeating-linear-gradient(
-                    0deg,
-                    transparent,
-                    transparent 2px,
-                    rgba(0, 255, 0, 0.03) 2px,
-                    rgba(0, 255, 0, 0.03) 4px
-                );
-            z-index: -1;
-        }
-        
-        .container {
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .terminal-header {
-            background: #333;
-            padding: 10px;
-            border-radius: 5px 5px 0 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .terminal-buttons {
-            display: flex;
-            gap: 5px;
-        }
-        
-        .btn {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-        
-        .btn.red { background: #ff5f56; }
-        .btn.yellow { background: #ffbd2e; }
-        .btn.green { background: #27ca3f; }
-        
-        .terminal-title {
-            color: #fff;
-            font-size: 0.9rem;
-            margin-left: 10px;
-        }
-        
-        .terminal-body {
-            background: rgba(0, 0, 0, 0.9);
-            border: 1px solid #333;
-            border-radius: 0 0 5px 5px;
-            padding: 20px;
-            min-height: 80vh;
-            font-size: 1.1rem;
-            line-height: 1.4;
-        }
-        
-        .prompt {
-            color: #ff0000;
-            font-weight: bold;
-        }
-        
-        .command {
-            color: #ffff00;
-        }
-        
-        .output {
-            color: #00ff00;
-            margin-left: 20px;
-        }
-        
-        .error {
-            color: #ff0000;
-        }
-        
-        .warning {
-            color: #ff8800;
-        }
-        
-        .line {
-            margin-bottom: 5px;
-        }
-        
-        .cursor {
-            animation: cursor-blink 1s infinite;
-        }
-        
-        @keyframes cursor-blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-        
-        .ascii-art {
-            color: #ff0000;
-            font-size: 0.8rem;
-            text-align: center;
-            margin: 20px 0;
-            white-space: pre;
-        }
-        
-        .system-info {
-            background: rgba(255, 0, 0, 0.1);
-            border: 1px solid #ff0000;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 5px;
-        }
-        
-        .blinking {
-            animation: blink 1s infinite;
-        }
-        
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0.3; }
-        }
-        
-        .team-scroll {
-            background: rgba(0, 255, 0, 0.1);
-            border: 1px solid #00ff00;
-            padding: 10px;
-            margin: 20px 0;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .team-text {
-            display: inline-block;
-            white-space: nowrap;
-            animation: scroll-text 30s linear infinite;
-            font-size: 1rem;
-            color: #ffff00;
-        }
-        
-        @keyframes scroll-text {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-    </style>
-</head>
-<body>
-    <div class="terminal-bg"></div>
-    <div class="container">
-        <div class="terminal-header">
-            <div class="terminal-buttons">
-                <div class="btn red"></div>
-                <div class="btn yellow"></div>
-                <div class="btn green"></div>
-            </div>
-            <div class="terminal-title">root@compromised-system:~</div>
-        </div>
-        
-        <div class="terminal-body">
-            <div class="line"><span class="prompt">root@target:~#</span> <span class="command">whoami</span></div>
-            <div class="line output">root</div>
-            <div class="line"><span class="prompt">root@target:~#</span> <span class="command">echo "HACKED BY [ATTACKER_NAME]"</span></div>
-            <div class="line output">HACKED BY [ATTACKER_NAME]</div>
-            <div class="line"><span class="prompt">root@target:~#</span> <span class="command">cat /etc/passwd</span></div>
-            <div class="line output">root:x:0:0:root:/root:/bin/bash</div>
-            <div class="line output">daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin</div>
-            <div class="line output">www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin</div>
-            <div class="line"><span class="prompt">root@target:~#</span> <span class="command">echo "BLACK TERMINAL TEAM"</span></div>
-            <div class="line output">BLACK TERMINAL TEAM</div>
-            
-            <div class="ascii-art">
-    ██████╗ ██╗   ██╗███╗   ██╗███████╗██████╗ 
-    ██╔══██╗██║   ██║████╗  ██║██╔════╝██╔══██╗
-    ██████╔╝██║   ██║██╔██╗ ██║█████╗  ██║  ██║
-    ██╔═══╝ ██║   ██║██║╚██╗██║██╔══╝  ██║  ██║
-    ██║     ╚██████╔╝██║ ╚████║███████╗██████╔╝
-    ╚═╝      ╚═════╝ ╚═╝  ╚═══╝╚══════╝╚═════╝
-            </div>
-            
-            <div class="system-info">
-                <div class="line error blinking">⚠️ CRITICAL SYSTEM ALERT ⚠️</div>
-                <div class="line">System Status: <span class="error">COMPROMISED</span></div>
-                <div class="line">Intrusion Detected: <span class="warning">YES</span></div>
-                <div class="line">Security Level: <span class="error">BREACHED</span></div>
-                <div class="line">Admin Privileges: <span class="error">ESCALATED</span></div>
-            </div>
-            
-            <div class="line"><span class="prompt">root@target:~#</span> <span class="command">cat message.txt</span></div>
-            <div class="line output">[MESSAGE_CONTENT]</div>
-            
-            <div class="team-scroll">
-                <div class="team-text">TEAM MEMBERS: [TEAM_NAMES]</div>
-            </div>
-            
-            <div class="line"><span class="prompt">root@target:~#</span> <span class="command">echo "We do not forgive. We do not forget."</span></div>
-            <div class="line output">We do not forgive. We do not forget.</div>
-            <div class="line"><span class="prompt">root@target:~#</span> <span class="cursor">█</span></div>
-        </div>
+<title>Hacked By Black Terminal</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background: #000;
+    color: #00ff00;
+    font-family: "Consolas", "Courier New", monospace;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  .terminal-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 255, 0, 0.03) 2px,
+      rgba(0, 255, 0, 0.03) 4px
+    );
+    z-index: -1;
+  }
+
+  .container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .terminal-header {
+    background: #333;
+    padding: 10px;
+    border-radius: 5px 5px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .terminal-buttons {
+    display: flex;
+    gap: 5px;
+  }
+
+  .btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .btn.red {
+    background: #ff5f56;
+  }
+  .btn.yellow {
+    background: #ffbd2e;
+  }
+  .btn.green {
+    background: #27ca3f;
+  }
+
+  .terminal-title {
+    color: #fff;
+    font-size: 0.9rem;
+    margin-left: 10px;
+  }
+
+  .terminal-body {
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid #333;
+    border-radius: 0 0 5px 5px;
+    padding: 20px;
+    min-height: 80vh;
+    font-size: 1.1rem;
+    line-height: 1.4;
+  }
+
+  .prompt {
+    color: #ff0000;
+    font-weight: bold;
+  }
+
+  .command {
+    color: #ffff00;
+  }
+
+  .output {
+    color: #00ff00;
+    margin-left: 20px;
+  }
+
+  .error {
+    color: #ff0000;
+  }
+
+  .warning {
+    color: #ff8800;
+  }
+
+  .line {
+    margin-bottom: 5px;
+  }
+
+  .cursor {
+    animation: cursor-blink 1s infinite;
+  }
+
+  @keyframes cursor-blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    51%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .ascii-art {
+    color: #ff0000;
+    font-size: 0.8rem;
+    text-align: center;
+    margin: 20px 0;
+    white-space: pre;
+  }
+
+  .system-info {
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid #ff0000;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 5px;
+  }
+
+  .blinking {
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    51%,
+    100% {
+      opacity: 0.3;
+    }
+  }
+
+  .team-scroll {
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid #00ff00;
+    padding: 10px;
+    margin: 20px 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .team-text {
+    display: inline-block;
+    white-space: nowrap;
+    animation: scroll-text 30s linear infinite;
+    font-size: 1rem;
+    color: #ffff00;
+  }
+
+  @keyframes scroll-text {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+</style>
+<div class="terminal-bg"></div>
+<div class="container">
+  <div class="terminal-header">
+    <div class="terminal-buttons">
+      <div class="btn red"></div>
+      <div class="btn yellow"></div>
+      <div class="btn green"></div>
     </div>
-</body>
-</html>
+    <div class="terminal-title">root@compromised-system:~</div>
+  </div>
+
+  <div class="terminal-body">
+    <div class="line">
+      <span class="prompt">root@target:~#</span>
+      <span class="command">whoami</span>
+    </div>
+    <div class="line output">root</div>
+    <div class="line">
+      <span class="prompt">root@target:~#</span>
+      <span class="command">echo "HACKED BY [ATTACKER_NAME]"</span>
+    </div>
+    <div class="line output">HACKED BY [ATTACKER_NAME]</div>
+    <div class="line">
+      <span class="prompt">root@target:~#</span>
+      <span class="command">cat /etc/passwd</span>
+    </div>
+    <div class="line output">root:x:0:0:root:/root:/bin/bash</div>
+    <div class="line output">
+      daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+    </div>
+    <div class="line output">
+      www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+    </div>
+    <div class="line">
+      <span class="prompt">root@target:~#</span>
+      <span class="command">echo "BLACK TERMINAL TEAM"</span>
+    </div>
+    <div class="line output">BLACK TERMINAL TEAM</div>
+
+    <div class="ascii-art">
+      ██████╗ ██╗ ██╗███╗ ██╗███████╗██████╗ ██╔══██╗██║ ██║████╗
+      ██║██╔════╝██╔══██╗ ██████╔╝██║ ██║██╔██╗ ██║█████╗ ██║ ██║ ██╔═══╝ ██║
+      ██║██║╚██╗██║██╔══╝ ██║ ██║ ██║ ╚██████╔╝██║ ╚████║███████╗██████╔╝ ╚═╝
+      ╚═════╝ ╚═╝ ╚═══╝╚══════╝╚═════╝
+    </div>
+
+    <div class="system-info">
+      <div class="line error blinking">⚠️ CRITICAL SYSTEM ALERT ⚠️</div>
+      <div class="line">
+        System Status: <span class="error">COMPROMISED</span>
+      </div>
+      <div class="line">
+        Intrusion Detected: <span class="warning">YES</span>
+      </div>
+      <div class="line">
+        Security Level: <span class="error">BREACHED</span>
+      </div>
+      <div class="line">
+        Admin Privileges: <span class="error">ESCALATED</span>
+      </div>
+    </div>
+
+    <div class="line">
+      <span class="prompt">root@target:~#</span>
+      <span class="command">cat message.txt</span>
+    </div>
+    <div class="line output">[MESSAGE_CONTENT]</div>
+
+    <div class="team-scroll">
+      <div class="team-text">TEAM MEMBERS: [TEAM_NAMES]</div>
+    </div>
+
+    <div class="line">
+      <span class="prompt">root@target:~#</span>
+      <span class="command">echo "We do not forgive. We do not forget."</span>
+    </div>
+    <div class="line output">We do not forgive. We do not forget.</div>
+    <div class="line">
+      <span class="prompt">root@target:~#</span> <span class="cursor">█</span>
+    </div>
+  </div>
+</div>

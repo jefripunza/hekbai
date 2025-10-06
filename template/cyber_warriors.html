@@ -1,32 +1,115 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacked By Cyber Warriors</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: linear-gradient(45deg, #000000, #1a1a1a, #000000); background-size: 400% 400%; animation: gradient-wave 8s ease infinite; color: #fff; font-family: 'Impact', 'Arial Black', sans-serif; min-height: 100vh; position: relative; overflow-x: hidden; }
-        @keyframes gradient-wave { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        .container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; padding: 20px; position: relative; }
-        .cyber-title { font-size: 6rem; font-weight: 900; color: #00ffff; text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 60px #00ffff; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 8px; }
-        .attacker-name { font-size: 2.8rem; background: linear-gradient(45deg, #ff0000, #ff8800, #ffff00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 20px; letter-spacing: 4px; }
-        .warrior-title { font-size: 3.5rem; background: linear-gradient(45deg, #ff0000, #ff8800, #ffff00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 60px; letter-spacing: 4px; }
-        .warrior-message { font-size: 1.5rem; line-height: 2; text-align: center; margin: 40px 0; color: #fff; max-width: 900px; }
-        .team-scroll { width: 100%; background: rgba(0, 255, 255, 0.1); border: 1px solid #00ffff; padding: 15px 0; margin: 30px 0; overflow: hidden; position: relative; }
-        .team-text { display: inline-block; white-space: nowrap; animation: scroll-text 32s linear infinite; font-size: 1.3rem; color: #ffff00; }
-        @keyframes scroll-text { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-        .warrior-signature { font-size: 4rem; color: #ff0000; margin-top: 60px; text-shadow: 0 0 40px #ff0000; font-weight: 900; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1 class="cyber-title">HACKED BY</h1>
-        <h2 class="attacker-name">[ATTACKER_NAME]</h2>
-        <h3 class="warrior-title">CYBER WARRIORS</h3>
-        <div class="warrior-message">[MESSAGE_CONTENT]</div>
-        <div class="team-scroll"><div class="team-text">TEAM MEMBERS: [TEAM_NAMES]</div></div>
-        <div class="warrior-signature">- CYBER WARRIORS -</div>
-    </div>
-</body>
-</html>
+<title>Hacked By Cyber Warriors</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    background: linear-gradient(45deg, #000000, #1a1a1a, #000000);
+    background-size: 400% 400%;
+    animation: gradient-wave 8s ease infinite;
+    color: #fff;
+    font-family: "Impact", "Arial Black", sans-serif;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+  @keyframes gradient-wave {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+  }
+  .cyber-title {
+    font-size: 6rem;
+    font-weight: 900;
+    color: #00ffff;
+    text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 60px #00ffff;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 8px;
+  }
+  .attacker-name {
+    font-size: 2.8rem;
+    background: linear-gradient(45deg, #ff0000, #ff8800, #ffff00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+    letter-spacing: 4px;
+  }
+  .warrior-title {
+    font-size: 3.5rem;
+    background: linear-gradient(45deg, #ff0000, #ff8800, #ffff00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 60px;
+    letter-spacing: 4px;
+  }
+  .warrior-message {
+    font-size: 1.5rem;
+    line-height: 2;
+    text-align: center;
+    margin: 40px 0;
+    color: #fff;
+    max-width: 900px;
+  }
+  .team-scroll {
+    width: 100%;
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid #00ffff;
+    padding: 15px 0;
+    margin: 30px 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .team-text {
+    display: inline-block;
+    white-space: nowrap;
+    animation: scroll-text 32s linear infinite;
+    font-size: 1.3rem;
+    color: #ffff00;
+  }
+  @keyframes scroll-text {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  .warrior-signature {
+    font-size: 4rem;
+    color: #ff0000;
+    margin-top: 60px;
+    text-shadow: 0 0 40px #ff0000;
+    font-weight: 900;
+  }
+</style>
+<div class="container">
+  <h1 class="cyber-title">HACKED BY</h1>
+  <h2 class="attacker-name">[ATTACKER_NAME]</h2>
+  <h3 class="warrior-title">CYBER WARRIORS</h3>
+  <div class="warrior-message">[MESSAGE_CONTENT]</div>
+  <div class="team-scroll">
+    <div class="team-text">TEAM MEMBERS: [TEAM_NAMES]</div>
+  </div>
+  <div class="warrior-signature">- CYBER WARRIORS -</div>
+</div>
