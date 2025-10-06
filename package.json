@@ -4,8 +4,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun run web_compiler.ts && bun run --watch index.ts",
-    "compile": "bun run web_compiler.ts && bun build index.ts --compile --outfile hekbai"
+    "compiler": "bun run web_compiler.ts && bun run template_compiler.ts",
+    "dev": "bun run compiler && bun run --watch index.ts",
+    "compile": "bun run compiler && bun build index.ts --compile --outfile hekbai"
   },
   "devDependencies": {
     "@types/bun": "latest",
@@ -23,6 +24,7 @@
     "express": "^5.1.0",
     "helmet": "^8.1.0",
     "morgan": "^1.10.1",
+    "uuid": "^13.0.0",
     "ws": "^8.18.3"
   }
 }

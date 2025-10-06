@@ -4,6 +4,7 @@ class PanelController {
         this.currentState = 'connect';
         this.roomData = {
             roomId: '',
+            attackerName: '',
             template: '',
             logo: null,
             music: null,
@@ -108,13 +109,19 @@ class PanelController {
 
     // Setup Form Handler
     handleSave() {
+        const attackerName = document.getElementById('attacker-name').value.trim();
         const template = document.getElementById('template-select').value;
         const description = document.getElementById('description').value.trim();
         const teamInput = document.getElementById('team-members').value.trim();
 
         // Validation
+        if (!attackerName) {
+            this.showError('Please enter attacker name (required)');
+            return;
+        }
+        
         if (!template) {
-            this.showError('Please select a template');
+            this.showError('Please select a template (required)');
             return;
         }
         
@@ -124,12 +131,12 @@ class PanelController {
         }
 
         if (!description) {
-            this.showError('Please enter a description');
+            this.showError('Please enter a description (required)');
             return;
         }
 
         if (!teamInput) {
-            this.showError('Please enter team members');
+            this.showError('Please enter team members (required)');
             return;
         }
 
@@ -144,6 +151,7 @@ class PanelController {
         }
 
         // Save data
+        this.roomData.attackerName = attackerName;
         this.roomData.template = template;
         this.roomData.description = description;
         this.roomData.teamMembers = teamMembers;
@@ -273,10 +281,16 @@ class PanelController {
     // Helper Methods
     getTemplateDisplayName(template) {
         const templates = {
-            'stealth': 'Stealth Mode',
-            'aggressive': 'Aggressive Scan',
-            'passive': 'Passive Monitor',
-            'advanced': 'Advanced Penetration'
+            'anonymous_legion': 'Anonymous Legion',
+            'cyber_ghost': 'Cyber Ghost',
+            'shadow_strike': 'Shadow Strike',
+            'black_terminal': 'Black Terminal',
+            'blood_eagle': 'Blood Eagle',
+            'dark_legion': 'Dark Legion',
+            'elite_squad': 'Elite Squad',
+            'phantom_collective': 'Phantom Collective',
+            'digital_rebels': 'Digital Rebels',
+            'cyber_warriors': 'Cyber Warriors'
         };
         return templates[template] || template;
     }
@@ -387,6 +401,7 @@ class PanelController {
     resetForm() {
         // Reset all form fields
         document.getElementById('room-id').value = '';
+        document.getElementById('attacker-name').value = '';
         document.getElementById('template-select').value = '';
         document.getElementById('description').value = '';
         document.getElementById('team-members').value = '';
@@ -398,6 +413,7 @@ class PanelController {
         // Reset room data
         this.roomData = {
             roomId: '',
+            attackerName: '',
             template: '',
             logo: null,
             music: null,

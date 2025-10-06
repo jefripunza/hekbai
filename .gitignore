@@ -38,4 +38,5 @@ bun.lockb
 
 room
 panel_compiled.ts
+template_compiled.ts
 *.exe

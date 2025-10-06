@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacked By Digital Rebels</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #000; color: #fff; font-family: 'Orbitron', 'Courier New', monospace; min-height: 100vh; position: relative; overflow-x: hidden; }
+        .container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; padding: 20px; position: relative; }
+        .hack-title { font-size: 5rem; font-weight: 900; color: #ff0000; text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff0000; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 5px; }
+        .attacker-name { font-size: 2.8rem; color: #00ff00; margin-bottom: 20px; letter-spacing: 3px; text-shadow: 0 0 20px #00ff00; }
+        .rebel-name { font-size: 3rem; color: #00ff00; margin-bottom: 50px; letter-spacing: 3px; text-shadow: 0 0 20px #00ff00; }
+        .manifesto-text { font-size: 1.4rem; line-height: 1.8; text-align: center; margin-bottom: 25px; max-width: 900px; }
+        .team-scroll { width: 100%; background: rgba(255, 0, 0, 0.1); border: 1px solid #ff0000; padding: 15px 0; margin: 30px 0; overflow: hidden; position: relative; }
+        .team-text { display: inline-block; white-space: nowrap; animation: scroll-text 29s linear infinite; font-size: 1.3rem; color: #ffff00; }
+        @keyframes scroll-text { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .rebel-signature { font-size: 3rem; color: #00ff00; margin-top: 50px; text-shadow: 0 0 30px #00ff00; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="hack-title">HACKED BY</h1>
+        <h2 class="attacker-name">[ATTACKER_NAME]</h2>
+        <h3 class="rebel-name">DIGITAL REBELS</h3>
+        <div class="manifesto-text">[MESSAGE_CONTENT]</div>
+        <div class="team-scroll"><div class="team-text">TEAM MEMBERS: [TEAM_NAMES]</div></div>
+        <div class="rebel-signature">- DIGITAL REBELS -</div>
+    </div>
+</body>
+</html>

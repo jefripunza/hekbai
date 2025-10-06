@@ -47,13 +47,25 @@
                 <div class="panel-body">
                     <div class="form-grid">
                         <div class="input-group">
-                            <label for="template-select">TEMPLATE</label>
-                            <select id="template-select" class="cyber-select">
+                            <label for="attacker-name">ATTACKER NAME <span class="required">*</span></label>
+                            <input type="text" id="attacker-name" placeholder="Enter attacker name..." class="cyber-input" required>
+                            <div class="input-line"></div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="template-select">TEMPLATE <span class="required">*</span></label>
+                            <select id="template-select" class="cyber-select" required>
                                 <option value="">Select Template...</option>
-                                <option value="stealth">Stealth Mode</option>
-                                <option value="aggressive">Aggressive Scan</option>
-                                <option value="passive">Passive Monitor</option>
-                                <option value="advanced">Advanced Penetration</option>
+                                <option value="anonymous_legion">Anonymous Legion</option>
+                                <option value="cyber_ghost">Cyber Ghost</option>
+                                <option value="shadow_strike">Shadow Strike</option>
+                                <option value="black_terminal">Black Terminal</option>
+                                <option value="blood_eagle">Blood Eagle</option>
+                                <option value="dark_legion">Dark Legion</option>
+                                <option value="elite_squad">Elite Squad</option>
+                                <option value="phantom_collective">Phantom Collective</option>
+                                <option value="digital_rebels">Digital Rebels</option>
+                                <option value="cyber_warriors">Cyber Warriors</option>
                             </select>
                         </div>
                         
@@ -80,13 +92,13 @@
                         </div>
                         
                         <div class="input-group full-width">
-                            <label for="description">DESCRIPTION</label>
-                            <textarea id="description" placeholder="Enter operation description..." class="cyber-textarea"></textarea>
+                            <label for="description">DESCRIPTION <span class="required">*</span></label>
+                            <textarea id="description" placeholder="Enter operation description..." class="cyber-textarea" required></textarea>
                         </div>
                         
                         <div class="input-group full-width">
-                            <label for="team-members">TEAM MEMBERS</label>
-                            <input type="text" id="team-members" placeholder="member1;member2;member3..." class="cyber-input">
+                            <label for="team-members">TEAM MEMBERS <span class="required">*</span></label>
+                            <input type="text" id="team-members" placeholder="member1;member2;member3..." class="cyber-input" required>
                             <div class="input-hint">Separate members with semicolon (;)</div>
                         </div>
                     </div>

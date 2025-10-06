@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacked By Blood Eagle</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .drop {
+            position: absolute;
+            background: linear-gradient(to bottom, transparent, #00ffff);
+            width: 2px;
+            height: 100px;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            0% { transform: translateY(-100vh); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .header {
+            margin-bottom: 40px;
+        }
+        
+        .hack-title {
+            font-size: 2.5rem;
+            color: #ff0000;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px #ff0000;
+        }
+        
+        .attacker-name {
+            font-size: 2.8rem;
+            color: #00ff00;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px #00ff00;
+        }
+        
+        .agency-logo {
+            width: 200px;
+            height: 200px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .agency-logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, #00ffff, transparent);
+            animation: rotate 3s linear infinite;
+        }
+        
+        .agency-logo::after {
+            content: '🦅';
+            font-size: 4rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .hacker-title {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #00ff00;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px #00ff00;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 30px #00ff00; }
+            to { text-shadow: 0 0 50px #00ff00, 0 0 60px #00ff00; }
+        }
+        
+        .agency-name {
+            font-size: 2.5rem;
+            color: #ff0040;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+        
+        .status-bar {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ffff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            max-width: 600px;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .status-label {
+            color: #00ffff;
+        }
+        
+        .status-value {
+            color: #ff0000;
+            font-weight: bold;
+        }
+        
+        .message-content {
+            max-width: 800px;
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin: 30px 0;
+            text-align: center;
+            color: #00ffff;
+        }
+        
+        .team-scroll {
+            width: 100%;
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            padding: 15px 0;
+            margin: 30px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .team-text {
+            display: inline-block;
+            white-space: nowrap;
+            animation: scroll-text 28s linear infinite;
+            font-size: 1.3rem;
+            color: #ffff00;
+        }
+        
+        @keyframes scroll-text {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .warning-banner {
+            background: linear-gradient(45deg, #ff0000, #ff8800);
+            color: #fff;
+            padding: 15px;
+            margin: 30px 0;
+            border-radius: 5px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            animation: pulse-banner 1.5s infinite;
+        }
+        
+        @keyframes pulse-banner {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .footer-msg {
+            margin-top: 40px;
+            font-size: 1.1rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="rain" id="rain"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="hack-title">HACKED BY</h1>
+            <h2 class="attacker-name">[ATTACKER_NAME]</h2>
+        </div>
+        
+        <div class="agency-logo"></div>
+        
+        <h3 class="agency-name">BLOOD EAGLE TEAM</h3>
+        
+        <div class="status-bar">
+            <div class="status-item">
+                <span class="status-label">System Status:</span>
+                <span class="status-value">HACKED</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Protection Level:</span>
+                <span class="status-value">BYPASSED</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Admin Access:</span>
+                <span class="status-value">COMPROMISED</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Data Security:</span>
+                <span class="status-value">BREACHED</span>
+            </div>
+        </div>
+        
+        <div class="message-content">
+            [MESSAGE_CONTENT]
+        </div>
+        
+        <div class="team-scroll">
+            <div class="team-text">TEAM MEMBERS: [TEAM_NAMES]</div>
+        </div>
+        
+        <div class="warning-banner">
+            🚨 PLEASE UPGRADE YOUR SECURITY 🚨
+        </div>
+        
+        <div class="footer-msg">
+            This is a security demonstration. Contact us for vulnerability assessment.
+        </div>
+    </div>
+    
+    <script>
+        // Create digital rain effect
+        function createRain() {
+            const rain = document.getElementById('rain');
+            const drops = 50;
+            
+            for (let i = 0; i < drops; i++) {
+                const drop = document.createElement('div');
+                drop.className = 'drop';
+                drop.style.left = Math.random() * 100 + '%';
+                drop.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                drop.style.animationDelay = Math.random() * 2 + 's';
+                rain.appendChild(drop);
+            }
+        }
+        
+        createRain();
+    </script>
+</body>
+</html>
