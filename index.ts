@@ -124,6 +124,18 @@ websocket.on("connection", (ws: WebSocket) => {
   ws.send(JSON.stringify(welcome));
 });
 
+app.post("/api/config/set/:room_id", (req, res) => {
+  const room_id = req.params.room_id;
+  const body = req.body as RoomField;
+  const room = rooms.get(room_id);
+  if (room) {
+    room.fields = body;
+  }
+  res.json({
+    message: "success",
+  });
+});
+
 app.get("/api/templates", (req, res) => {
   res.json({
     message: "success",
