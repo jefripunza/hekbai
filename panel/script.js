@@ -247,7 +247,7 @@ class PanelController {
             copyCodeBtn.replaceWith(copyCodeBtn.cloneNode(true));
             const newCopyBtn = document.getElementById('copy-code-btn');
             newCopyBtn.addEventListener('click', () => {
-                this.copyInterceptCode();
+                this.handleCopyInterceptCode();
             });
         }
     }
