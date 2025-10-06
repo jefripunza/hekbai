@@ -9,7 +9,7 @@ class PanelController {
             template: '',
             logo: null,
             music: null,
-            description: '',
+            message: '',
             teamMembers: []
         };
         
@@ -249,7 +249,7 @@ class PanelController {
     handleSave() {
         const attackerName = document.getElementById('attacker-name').value.trim();
         const template = document.getElementById('template-select').value;
-        const description = document.getElementById('description').value.trim();
+        const message = document.getElementById('message').value.trim();
         const teamInput = document.getElementById('team-members').value.trim();
 
         // Validation
@@ -268,8 +268,8 @@ class PanelController {
             return;
         }
 
-        if (!description) {
-            this.showError('Please enter a description (required)');
+        if (!message) {
+            this.showError('Please enter a message (required)');
             return;
         }
 
@@ -291,7 +291,7 @@ class PanelController {
         // Save data
         this.roomData.attackerName = attackerName;
         this.roomData.template = template;
-        this.roomData.description = description;
+        this.roomData.message = message;
         this.roomData.teamMembers = teamMembers;
 
         // Show loading state
@@ -309,7 +309,7 @@ class PanelController {
                 template_key: this.roomData.template,
                 logo: this.roomData.logo ? await this.fileToBase64(this.roomData.logo) : undefined,
                 music: this.roomData.music ? await this.fileToBase64(this.roomData.music) : undefined,
-                message: this.roomData.description,
+                message: this.roomData.message,
                 teams: this.roomData.teamMembers
             };
             
@@ -368,16 +368,18 @@ class PanelController {
                 return;
             }
 
-            // Validate file size (max 5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                this.showError('File size must be less than 5MB');
+            // Validate file size (exactly 1MB requirement)
+            const fileSizeMB = file.size / (1024 * 1024);
+            if (fileSizeMB > 1) {
+                this.showError('Logo file size must be maximum 1MB. Current size: ' + fileSizeMB.toFixed(2) + 'MB');
                 event.target.value = '';
                 return;
             }
 
             this.roomData.logo = file;
-            fileNameSpan.textContent = file.name;
-            this.addLogEntry(`Logo uploaded: ${file.name}`);
+            fileNameSpan.textContent = file.name + ' (' + fileSizeMB.toFixed(2) + 'MB)';
+            this.addLogEntry(`Logo uploaded: ${file.name} (${fileSizeMB.toFixed(2)}MB)`);
+            this.showSuccess('Logo uploaded successfully!');
         } else {
             fileNameSpan.textContent = 'Choose file...';
             this.roomData.logo = null;
@@ -642,7 +644,7 @@ ws.onclose = () => {
         document.getElementById('room-id').value = '';
         document.getElementById('attacker-name').value = '';
         document.getElementById('template-select').value = '';
-        document.getElementById('description').value = '';
+        document.getElementById('message').value = '';
         document.getElementById('team-members').value = '';
         document.getElementById('logo-upload').value = '';
         document.getElementById('music-upload').value = '';
@@ -662,7 +664,7 @@ ws.onclose = () => {
             template: '',
             logo: null,
             music: null,
-            description: '',
+            message: '',
             teamMembers: []
         };
     }
