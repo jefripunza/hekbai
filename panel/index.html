@@ -54,19 +54,14 @@
                         
                         <div class="input-group">
                             <label for="template-select">TEMPLATE <span class="required">*</span></label>
-                            <select id="template-select" class="cyber-select" required>
-                                <option value="">Select Template...</option>
-                                <option value="anonymous_legion">Anonymous Legion</option>
-                                <option value="cyber_ghost">Cyber Ghost</option>
-                                <option value="shadow_strike">Shadow Strike</option>
-                                <option value="black_terminal">Black Terminal</option>
-                                <option value="blood_eagle">Blood Eagle</option>
-                                <option value="dark_legion">Dark Legion</option>
-                                <option value="elite_squad">Elite Squad</option>
-                                <option value="phantom_collective">Phantom Collective</option>
-                                <option value="digital_rebels">Digital Rebels</option>
-                                <option value="cyber_warriors">Cyber Warriors</option>
-                            </select>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <select id="template-select" class="cyber-select" required style="flex: 1;">
+                                    <option value="">Loading templates...</option>
+                                </select>
+                                <button type="button" id="refresh-templates-btn" class="cyber-btn-small" title="Refresh Templates">
+                                    🔄
+                                </button>
+                            </div>
                         </div>
                         
                         <div class="input-group">

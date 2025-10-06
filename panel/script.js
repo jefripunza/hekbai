@@ -20,6 +20,7 @@ class PanelController {
         this.bindEvents();
         this.showState('connect');
         this.startMatrixEffect();
+        this.loadTemplates();
     }
 
     // State Management
@@ -76,6 +77,10 @@ class PanelController {
         // Copy intercept code button
         const copyCodeBtn = document.getElementById('copy-code-btn');
         copyCodeBtn.addEventListener('click', () => this.handleCopyInterceptCode());
+
+        // Refresh templates button
+        const refreshTemplatesBtn = document.getElementById('refresh-templates-btn');
+        refreshTemplatesBtn.addEventListener('click', () => this.handleRefreshTemplates());
     }
 
     // Connect Form Handler
@@ -243,6 +248,72 @@ class PanelController {
         
         this.websocket.send(JSON.stringify(messagePayload));
         this.addLogEntry(`Sent message: ${content}`);
+    }
+
+    // Load Templates from API
+    async loadTemplates() {
+        try {
+            const response = await fetch('/api/templates');
+            if (response.ok) {
+                const result = await response.json();
+                if (result.message === 'success' && result.data) {
+                    this.populateTemplateDropdown(result.data);
+                    this.addLogEntry('Templates loaded successfully');
+                } else {
+                    throw new Error('Invalid API response format');
+                }
+            } else {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+        } catch (error) {
+            console.error('Failed to load templates:', error);
+            this.addLogEntry('Failed to load templates, using fallback');
+            this.showError('Failed to load templates from server');
+            // Use fallback templates if API fails
+            this.populateTemplateDropdown([
+                'anonymous_legion', 'cyber_ghost', 'shadow_strike', 'black_terminal',
+                'blood_eagle', 'dark_legion', 'elite_squad', 'phantom_collective',
+                'digital_rebels', 'cyber_warriors'
+            ]);
+        }
+    }
+
+    // Populate Template Dropdown
+    populateTemplateDropdown(templateKeys) {
+        const templateSelect = document.getElementById('template-select');
+        
+        // Clear existing options except the first one
+        templateSelect.innerHTML = '<option value="">Select Template...</option>';
+        
+        // Add templates from API
+        templateKeys.forEach(templateKey => {
+            const option = document.createElement('option');
+            option.value = templateKey;
+            option.textContent = this.getTemplateDisplayName(templateKey);
+            templateSelect.appendChild(option);
+        });
+        
+        this.addLogEntry(`Loaded ${templateKeys.length} templates`);
+    }
+
+    // Handle Refresh Templates Button
+    handleRefreshTemplates() {
+        const refreshBtn = document.getElementById('refresh-templates-btn');
+        const templateSelect = document.getElementById('template-select');
+        
+        // Show loading state
+        refreshBtn.innerHTML = '⏳';
+        refreshBtn.disabled = true;
+        templateSelect.innerHTML = '<option value="">Refreshing templates...</option>';
+        
+        // Reload templates
+        this.loadTemplates().finally(() => {
+            // Reset button state
+            refreshBtn.innerHTML = '🔄';
+            refreshBtn.disabled = false;
+        });
+        
+        this.addLogEntry('Refreshing templates...');
     }
 
     // Setup Form Handler

@@ -321,6 +321,33 @@ body {
     left: 100%;
 }
 
+.cyber-btn-small {
+    background: linear-gradient(45deg, #00ffff, #0080ff);
+    border: none;
+    padding: 8px 12px;
+    color: #000;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cyber-btn-small:hover {
+    background: linear-gradient(45deg, #0080ff, #00ffff);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.cyber-btn-small:active {
+    transform: scale(0.95);
+}
+
 /* Status Indicator */
 .status-indicator {
     display: flex;
