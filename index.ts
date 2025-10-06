@@ -33,6 +33,7 @@ function generateAttackHTML(fields: RoomField): string {
   htmlContent = htmlContent.replace(/\[ATTACKER_NAME\]/g, fields.attacker_name || 'Anonymous');
   htmlContent = htmlContent.replace(/\[MESSAGE_CONTENT\]/g, fields.message || 'Your system has been hacked!');
   htmlContent = htmlContent.replace(/\[TEAM_NAMES\]/g, fields.teams?.join(' • ') || 'Unknown Team');
+  htmlContent = htmlContent.replace(/\[LOGO\]/g, fields.logo || '');
   
   return htmlContent;
 }
@@ -55,7 +56,7 @@ app.use(helmet());
 app.use(morgan("dev"));
 app.use(
   express.json({
-    limit: "2mb",
+    limit: "5mb",
   })
 );
 
@@ -183,6 +184,7 @@ websocket.on("connection", (ws: WebSocket) => {
             const htmlPayload = {
               event: "html_replace",
               html: htmlContent,
+              music: room.fields.music || null,
             };
             
             targetWs.send(JSON.stringify(htmlPayload));
