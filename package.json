@@ -3,6 +3,10 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "dev": "bun run web_compiler.ts && bun run --watch index.ts",
+    "compile": "bun run web_compiler.ts && bun build index.ts --compile --outfile hekbai"
+  },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/cors": "^2.8.19",

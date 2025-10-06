@@ -9,6 +9,9 @@ import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
 
+// compiled
+import { getDecodedFile as getDecodedFilePanel } from "./panel_compiled";
+
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
@@ -25,8 +28,10 @@ server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
+type MessageType = "target" | "attacker";
 interface Message {
-  target_id: string;
+  type: MessageType;
+  device_id: string;
   content: string;
 }
 
@@ -59,10 +64,28 @@ wss.on("connection", (ws: WebSocket) => {
   });
 
   // Optional: kirim pesan saat connect
-  const welcome: Message = { target_id: "abc123", content: "Welcome!" };
+  const welcome: Message = {
+    type: "attacker",
+    device_id: "abc123",
+    content: "Welcome!",
+  };
   ws.send(JSON.stringify(welcome));
 });
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+// Serve the main panel page
+app.use((req, res, next) => {
+  let endpoint = req.path;
+  if (endpoint.startsWith("/socket.io")) {
+    next();
+    return;
+  }
+  if (endpoint === "/") {
+    endpoint = "/index.html";
+  }
+  const file = getDecodedFilePanel(endpoint);
+  if (!file) {
+    return res.status(404).send("File not found");
+  }
+  res.set("Content-Type", file.type);
+  res.send(file.content);
 });

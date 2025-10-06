@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HEKBAI Control Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Background Matrix Effect -->
+        <div class="matrix-bg"></div>
+        
+        <!-- Header -->
+        <header class="header">
+            <h1 class="glitch-text" data-text="HEKBAI">HEKBAI</h1>
+            <div class="subtitle">CONTROL PANEL v2.0</div>
+        </header>
+
+        <!-- Connection State -->
+        <div id="connect-state" class="state active">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 class="glitch-text" data-text="ESTABLISH CONNECTION">ESTABLISH CONNECTION</h2>
+                </div>
+                <div class="panel-body">
+                    <div class="input-group">
+                        <label for="room-id">ROOM ID</label>
+                        <input type="text" id="room-id" placeholder="Enter room identifier..." class="cyber-input">
+                        <div class="input-line"></div>
+                    </div>
+                    <button id="connect-btn" class="cyber-btn">
+                        <span>CONNECT</span>
+                        <div class="btn-glitch"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Setup State -->
+        <div id="setup-state" class="state">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 class="glitch-text" data-text="SYSTEM CONFIGURATION">SYSTEM CONFIGURATION</h2>
+                </div>
+                <div class="panel-body">
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="template-select">TEMPLATE</label>
+                            <select id="template-select" class="cyber-select">
+                                <option value="">Select Template...</option>
+                                <option value="stealth">Stealth Mode</option>
+                                <option value="aggressive">Aggressive Scan</option>
+                                <option value="passive">Passive Monitor</option>
+                                <option value="advanced">Advanced Penetration</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="logo-upload">LOGO UPLOAD <span class="required">*</span></label>
+                            <div class="file-upload">
+                                <input type="file" id="logo-upload" accept="image/*" class="file-input" required>
+                                <label for="logo-upload" class="file-label">
+                                    <span id="file-name">Choose file...</span>
+                                    <div class="upload-icon">📁</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="music-upload">MUSIC UPLOAD <span class="optional">(Optional)</span></label>
+                            <div class="file-upload">
+                                <input type="file" id="music-upload" accept="audio/*" class="file-input">
+                                <label for="music-upload" class="file-label">
+                                    <span id="music-file-name">Choose music file...</span>
+                                    <div class="upload-icon">🎵</div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group full-width">
+                            <label for="description">DESCRIPTION</label>
+                            <textarea id="description" placeholder="Enter operation description..." class="cyber-textarea"></textarea>
+                        </div>
+                        
+                        <div class="input-group full-width">
+                            <label for="team-members">TEAM MEMBERS</label>
+                            <input type="text" id="team-members" placeholder="member1;member2;member3..." class="cyber-input">
+                            <div class="input-hint">Separate members with semicolon (;)</div>
+                        </div>
+                    </div>
+                    
+                    <button id="save-btn" class="cyber-btn">
+                        <span>SAVE CONFIGURATION</span>
+                        <div class="btn-glitch"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Listening State -->
+        <div id="listening-state" class="state">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 class="glitch-text" data-text="SYSTEM ACTIVE">SYSTEM ACTIVE</h2>
+                    <div class="status-indicator">
+                        <div class="pulse"></div>
+                        <span>LISTENING</span>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="system-info">
+                        <div class="info-row">
+                            <span class="label">ROOM ID:</span>
+                            <span id="current-room" class="value">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">TEMPLATE:</span>
+                            <span id="current-template" class="value">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">TEAM SIZE:</span>
+                            <span id="team-size" class="value">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">STATUS:</span>
+                            <span class="value status-active">OPERATIONAL</span>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-monitor">
+                        <h3>ACTIVITY LOG</h3>
+                        <div class="log-container">
+                            <div class="log-entry">[SYSTEM] Initializing connection...</div>
+                            <div class="log-entry">[SYSTEM] Configuration loaded successfully</div>
+                            <div class="log-entry">[SYSTEM] Monitoring active</div>
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button id="copy-code-btn" class="cyber-btn">
+                            <span>COPY INTERCEPT CODE</span>
+                            <div class="btn-glitch"></div>
+                        </button>
+                        <button id="disconnect-btn" class="cyber-btn danger">
+                            <span>DISCONNECT</span>
+                            <div class="btn-glitch"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

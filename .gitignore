@@ -35,3 +35,7 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 bun.lock
 bun.lockb
+
+room
+panel_compiled.ts
+*.exe
