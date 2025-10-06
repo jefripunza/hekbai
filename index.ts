@@ -69,7 +69,7 @@ const targets = new Map<string, WebSocket>(); // random uuid
 interface RoomField {
   attacker_name: string;
   template_key: string;
-  logo?: string;
+  logo: string;
   music?: string;
   message: string;
   teams: string[];

